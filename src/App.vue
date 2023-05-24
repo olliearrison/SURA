@@ -1,14 +1,19 @@
 <template>
-  <GridBackground/>
-  
+  <div id="app">
+    <GridBackground/>
+    <Arcball/>
+  </div>
 </template>
+
 
 <script>
 import GridBackground from './components/GridBackground.vue'
+import Arcball from './components/ArcballControl.vue'
 
 export default {
   name: 'App',
   components: {
+    Arcball,
     GridBackground
   }
 }
@@ -16,12 +21,12 @@ export default {
 </script>
 
 <style>
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 0px;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
 }
 </style>
