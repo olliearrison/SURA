@@ -6,6 +6,8 @@
 import * as THREE from 'three';
 import InfiniteGridHelper from "./InfiniteGridHelper.js";
 
+export let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+export let renderer = new THREE.WebGLRenderer();
 
 export default {
   name: 'GridBackground',
@@ -15,12 +17,12 @@ export default {
     const scene = new THREE.Scene();
 
     // Create a renderer
-    const renderer = new THREE.WebGLRenderer();
     renderer.setSize(this.$el.clientWidth, this.$el.clientHeight);
     document.body.appendChild(renderer.domElement);
 
     // Create a camera
-    const camera = new THREE.PerspectiveCamera(75, this.$el.clientWidth/this.$el.clientHeight, 0.1, 1000);
+    
+    //camera = camera;
     camera.position.z = 2;
     camera.position.x = 0;
 
@@ -50,6 +52,7 @@ export default {
     scene.add(grid);
 
     let rotationSpeed = 0.01; // Initial rotation speed
+    
     function animate() {
         requestAnimationFrame(animate);
 
@@ -60,11 +63,28 @@ export default {
         grid.rotation.x += .005;
         grid.rotation.y += .003;
 
+
         // Render the scene with the camera
         renderer.render(scene, camera);
+        
     }
-
+    this.windowResizeHandler();
     animate();
+    window.addEventListener('resize', this.windowResizeHandler);
+  }, 
+  beforeUnmount() {
+    window.removeEventListener('resize', this.windowResizeHandler);
+},
+  methods: {
+    windowResizeHandler() {
+        console.log("hi");
+        const width = this.$el.clientWidth;
+        const height = this.$el.clientHeight;
+
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+        renderer.setSize(width, height);
+    }
   }
 }
 </script>

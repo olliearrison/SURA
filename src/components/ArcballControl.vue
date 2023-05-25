@@ -1,37 +1,75 @@
 <template>
-    <div class="arc"> </div>
+    <div class="arc" ref="arcballContainer"></div>
 </template>
 
 <script>
 import * as THREE from 'three';
 import { ArcballControls } from 'three/addons/controls/ArcballControls.js';
 
+export let renderer = new THREE.WebGLRenderer({alpha: true, antialias: true});
+export let camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
+let controls, scene;
 
 export default {
   name: 'ArcballControl',
   props: {
+    camera: {
+      type: Object,
+      required: true
+    }
+  },
+  data() {
+    return {
+      renderer: renderer,
+      controls: null,
+      scene: null
+    };
   },
   mounted() {
-    const renderer = new THREE.WebGLRenderer({alpha: true, antialias: true});
+    
     renderer.setSize(this.$el.clientWidth, this.$el.clientHeight);
     this.$el.appendChild(renderer.domElement);
 
-    const scene = new THREE.Scene();
+    scene = new THREE.Scene();
 
-    const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
+    //this.$emit('update:camera', camera);
+    this.$emit('update:camera', camera.clone());
 
-    const controls = new ArcballControls( camera, renderer.domElement, scene );
+    controls = new ArcballControls( camera, renderer.domElement, scene );
 
     controls.addEventListener( 'change', function () {
-
       renderer.render( scene, camera );
-
-    } );
+    });
 
     //controls.update() must be called after any manual changes to the camera's transform
     camera.position.set( 0, 20, 100 );
+    this.windowResizeHandler();
     controls.update();
+    this.animate();
+    window.addEventListener('resize', this.windowResizeHandler);
 
+  },beforeUnmount() {
+    window.removeEventListener('resize', this.windowResizeHandler);
+  },
+   methods: {
+    windowResizeHandler() {
+      const width = this.$el.clientWidth;
+      const height = this.$el.clientHeight;
+
+      this.$emit('update:camera', {
+        aspect: width / height,
+        width: width,
+        height: height
+      });
+      
+
+      renderer.setSize(width, height);
+    },
+    animate() {
+      requestAnimationFrame(this.animate);
+      controls.update();
+      renderer.render(scene, camera);
+    }
   }
 }
 </script>
@@ -39,8 +77,8 @@ export default {
 <style>
 .arc {
   position: absolute;
-  top: 100px;
-  right: 100px;
+  top: 10%;
+  right: 5%;
   width: 150px;  /* Adjust these as necessary */
   height: 150px; /* Adjust these as necessary */
 }
