@@ -46,7 +46,7 @@ export default {
     controls.addEventListener('change', this.handleCameraChange);
 
 
-    camera.position.set( 0, 20, 100 );
+    camera.position.set( 0, 0, 5 );
     this.windowResizeHandler();
     controls.update();
     this.animate();
