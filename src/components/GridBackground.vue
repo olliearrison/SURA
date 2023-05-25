@@ -12,6 +12,14 @@ export let renderer = new THREE.WebGLRenderer();
 export default {
   name: 'GridBackground',
   props: {
+    cameraPosition: {
+      type: Object,
+      required: true
+    },
+    cameraAngle: {
+      type: Object,
+      required: true
+    }
   },
   mounted(){
     const scene = new THREE.Scene();
@@ -23,8 +31,9 @@ export default {
     // Create a camera
     
     //camera = camera;
-    camera.position.z = 2;
-    camera.position.x = 0;
+    camera.rotation.order = "XYZ";
+    camera.position.set(this.cameraPosition.x, this.cameraPosition.y, this.cameraPosition.z);
+    camera.rotation.set(this.cameraAngle.x, this.cameraAngle.y, this.cameraAngle.z);
 
 
     renderer.setClearColor(new THREE.Color(0x000000));
@@ -49,10 +58,13 @@ export default {
     scene.add(cube);
 
     const grid = InfiniteGridHelper();
+    grid.rotation.x += .1;
+    grid.rotation.y += .2;
+
     scene.add(grid);
 
     let rotationSpeed = 0.01; // Initial rotation speed
-    
+    const self = this;
     function animate() {
         requestAnimationFrame(animate);
 
@@ -60,8 +72,13 @@ export default {
         cube.rotation.x += rotationSpeed;
         cube.rotation.y += rotationSpeed;
 
-        grid.rotation.x += .005;
-        grid.rotation.y += .003;
+        camera.position.copy(self.cameraPosition);
+        camera.rotation.copy(self.cameraAngle);
+
+        //camera.position.set(this.cameraPosition.x, this.cameraPosition.y, this.cameraPosition.z);
+        //camera.rotation.set(this.cameraAngle.x, this.cameraAngle.y, this.cameraAngle.z);
+
+        
 
 
         // Render the scene with the camera

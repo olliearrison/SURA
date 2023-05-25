@@ -13,11 +13,16 @@ let controls, scene;
 export default {
   name: 'ArcballControl',
   props: {
-    camera: {
+    cameraPosition: {
+      type: Object,
+      required: true
+    },
+    cameraAngle: {
       type: Object,
       required: true
     }
   },
+  /*
   data() {
     return {
       renderer: renderer,
@@ -25,6 +30,7 @@ export default {
       scene: null
     };
   },
+  */
   mounted() {
     
     renderer.setSize(this.$el.clientWidth, this.$el.clientHeight);
@@ -33,15 +39,13 @@ export default {
     scene = new THREE.Scene();
 
     //this.$emit('update:camera', camera);
-    this.$emit('update:camera', camera.clone());
+
+    //this.$emit('update:camera', camera.clone());
 
     controls = new ArcballControls( camera, renderer.domElement, scene );
+    controls.addEventListener('change', this.handleCameraChange);
 
-    controls.addEventListener( 'change', function () {
-      renderer.render( scene, camera );
-    });
 
-    //controls.update() must be called after any manual changes to the camera's transform
     camera.position.set( 0, 20, 100 );
     this.windowResizeHandler();
     controls.update();
@@ -50,17 +54,34 @@ export default {
 
   },beforeUnmount() {
     window.removeEventListener('resize', this.windowResizeHandler);
+    controls.removeEventListener('change', this.handleCameraChange);
   },
    methods: {
+    handleCameraChange() {
+      const cameraPosition = camera.position.clone();
+      const cameraAngle = camera.rotation.clone();
+
+
+      this.$emit('camera-updated', {
+        position: cameraPosition,
+        angle: cameraAngle
+      });
+
+      renderer.render( scene, camera );
+
+    },
+
     windowResizeHandler() {
       const width = this.$el.clientWidth;
       const height = this.$el.clientHeight;
 
+      /*
       this.$emit('update:camera', {
         aspect: width / height,
         width: width,
         height: height
       });
+      */
       
 
       renderer.setSize(width, height);

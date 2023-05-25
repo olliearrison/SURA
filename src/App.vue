@@ -1,8 +1,10 @@
 <template>
   <button @click="logCameraPosition">Log Camera Position</button>
   <div id="app">
-    <GridBackground :camera="camera" />
-    <Arcball ref="arcball" :camera="camera" @update:camera="updateCamera"/>
+    <GridBackground :camera-position="camera.position" :camera-angle="camera.angle"/>
+    <Arcball ref="arcball" :camera-position="camera.position"
+      :camera-angle="camera.angle"
+      @camera-updated="updateCamera"/>
   </div>
 </template>
 
@@ -19,29 +21,29 @@ export default {
   },
   data (){
     return {
-      camera: null,
-    }
+      camera: {
+        position: { x: 0, y: 0, z: 5 },
+        angle: { x: 0, y: 0, z: 0 }
+      }
+    };
   },
   methods: {
-    updateCamera(camera) {
-      this.camera = camera;
+    updateCamera({ position, angle }) {
+      // Update the camera position and angle based on the emitted data
+      this.camera.position = position;
+      this.camera.angle = angle;
     },
     logCameraPosition() {
       console.log('Logging camera position');
-    console.log(this.camera);
-    if (this.camera) {
-      console.log(this.camera.position);
-    } else {
-      console.log('Camera is not initialized');
-    }
     },
   },
+  /*
   mounted() {
   this.$nextTick(() => {
     this.camera = this.$refs.arcball.camera;
     console.log("Mounted camera: ", this.camera);
   });
-}
+  */
 
 }
 
