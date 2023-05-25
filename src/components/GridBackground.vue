@@ -33,7 +33,7 @@ export default {
     //camera = camera;
     camera.rotation.order = "XYZ";
     camera.position.set(this.cameraPosition.x, this.cameraPosition.y, this.cameraPosition.z);
-    camera.rotation.set(this.cameraAngle.x, this.cameraAngle.y, this.cameraAngle.z);
+    camera.rotation.set(new THREE.Euler(this.cameraAngle.x, this.cameraAngle.y, this.cameraAngle.z));
 
 
     renderer.setClearColor(new THREE.Color(0x000000));
@@ -73,13 +73,7 @@ export default {
         cube.rotation.y += rotationSpeed;
 
         camera.position.copy(self.cameraPosition);
-        camera.rotation.copy(self.cameraAngle);
-
-        //camera.position.set(this.cameraPosition.x, this.cameraPosition.y, this.cameraPosition.z);
-        //camera.rotation.set(this.cameraAngle.x, this.cameraAngle.y, this.cameraAngle.z);
-
-        
-
+        camera.rotation.set(self.cameraAngle.x, self.cameraAngle.y, self.cameraAngle.z);
 
         // Render the scene with the camera
         renderer.render(scene, camera);
