@@ -2,7 +2,8 @@
   <button @click="logCameraPosition">Log Camera Position</button>
   <div id="app">
     <GridBackground :camera-position="camera.position" :camera-angle="camera.angle"/>
-    <Arcball ref="arcball" :camera-position="camera.position"
+    <Arcball ref="arcball" 
+      :camera-position="camera.position"
       :camera-angle="camera.angle"
       @camera-updated="updateCamera"/>
   </div>
@@ -12,6 +13,11 @@
 <script>
 import GridBackground from './components/GridBackground.vue'
 import Arcball from './components/ArcballControl.vue'
+import * as THREE from 'three';
+
+export let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+export let renderer = new THREE.WebGLRenderer();
+export let scene = new THREE.Scene();
 
 export default {
   name: 'App',

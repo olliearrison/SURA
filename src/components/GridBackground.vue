@@ -5,9 +5,8 @@
 <script>
 import * as THREE from 'three';
 import InfiniteGridHelper from "./InfiniteGridHelper.js";
+import { renderer, camera, scene } from '../App.vue';
 
-export let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-export let renderer = new THREE.WebGLRenderer();
 
 export default {
   name: 'GridBackground',
@@ -22,7 +21,6 @@ export default {
     }
   },
   mounted(){
-    const scene = new THREE.Scene();
 
     // Create a renderer
     renderer.setSize(this.$el.clientWidth, this.$el.clientHeight);
