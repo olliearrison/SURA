@@ -1,16 +1,19 @@
 <template>
-  <button @click="logCameraPosition">Log Camera Position</button>
-  <div id="app">
-    <GridBackground :camera-position="camera.position" :camera-angle="camera.angle"/>
+  <DrawingInput/>
+  <div id = "app">
+  <GridBackground :camera-position="camera.position" :camera-angle="camera.angle"/>
+  <div id = "arcballContainer">
     <Arcball ref="arcball" 
       :camera-position="camera.position"
       :camera-angle="camera.angle"
       @camera-updated="updateCamera"/>
+    </div>
   </div>
 </template>
 
 
 <script>
+import DrawingInput from './components/DrawingInput.vue'
 import GridBackground from './components/GridBackground.vue'
 import Arcball from './components/ArcballControl.vue'
 import * as THREE from 'three';
@@ -22,13 +25,14 @@ export let scene = new THREE.Scene();
 export default {
   name: 'App',
   components: {
+    DrawingInput,
     Arcball,
     GridBackground
   },
   data (){
     return {
       camera: {
-        position: { x: 0, y: 0, z: 5 },
+        position: { x: 0, y: 0, z: 2 },
         angle: { x: 0, y: 0, z: 0 }
       }
     };
@@ -67,4 +71,9 @@ body {
   width: 100vw;
   height: 100vh;
 }
+
+.drawing-input {
+  position: relative;
+}
+
 </style>
