@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { MeshLine, MeshLineMaterial } from "three.meshline";
+import { MeshLine, MeshLineMaterial, MeshLineRaycast } from "three.meshline";
 import { scene, camera } from "../App.vue";
 
 let draw = {
@@ -12,7 +12,7 @@ let draw = {
             this.vertices = [];
             this.geometry.setAttribute("position", new THREE.BufferAttribute(new Float32Array(this.vertices), 3));
             this.material = new MeshLineMaterial({
-                lineWidth: this.stroke.show_stroke ? this.stroke.lineWidth : 0.01,
+                lineWidth: this.stroke.show_stroke ? this.stroke.lineWidth : .01,
                 sizeAttenuation: 1,
                 color: this.stroke.show_stroke ? this.stroke.color : 0xFFFFFF,
                 side: THREE.DoubleSide,
@@ -21,16 +21,19 @@ let draw = {
                 alphaTest: 0.9,
                 blending: THREE.NormalBlending,
                 transparent: false,
-                repeat: new THREE.Vector2(1, 1),
+                resolution: new THREE.Vector2(window.innerWidth, window.innerHeight),
+                repeat: new THREE.Vector2(.1, .1),
                 opacity: 1,
             });
-            this.mesh = new THREE.Line(this.line.geometry, this.material);
+            this.mesh = new THREE.Mesh(this.line.geometry, this.material);
+            this.mesh.raycast = MeshLineRaycast;
         }
 
         translate(x, y, z) {
+            // Translation from stackoverflow
             console.log(x, y, z);
-            var vec = new THREE.Vector3(); // create once and reuse
-            var pos = new THREE.Vector3(); // create once and reuse
+            var vec = new THREE.Vector3();
+            var pos = new THREE.Vector3();
 
             vec.set(
                 ( x / window.innerWidth ) * 2 - 1,
@@ -50,23 +53,21 @@ let draw = {
         }
 
         start() {
-            console.log("start");
             scene.add(this.mesh);
         }
 
         move(x, y, z) {
             var v3 = this.translate(x, y, z);
-            //var v3 = new THREE.Vector3(x, y, z);
-            //v3.unproject(camera);
             this.vertices = [...this.vertices, v3.x, v3.y, v3.z];
             this.geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(this.vertices), 3));
             this.line.setGeometry(this.geometry);  // This updates the MeshLine's geometry
         }
 
         end() {
-            this.geometry.computeBoundingSphere();
-            //renderer.render(scene, camera);
+            this.geometry.computeBoundingBox();
         }
+
+
     },
     onStart: function (x, y, z, stroke) {
         this.l = new this.draw(stroke);

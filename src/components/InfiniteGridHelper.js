@@ -6,7 +6,7 @@ import * as THREE from 'three';
 function InfiniteGridHelper() {
     const axes = 'xzy';
     const planeAxes = axes.slice(0, 2);
-    const color = new THREE.Color('white');
+    const color = new THREE.Color('#6699CC');
     const size1 = 1;
     const size2 = 5;
 

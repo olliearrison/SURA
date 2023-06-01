@@ -24,6 +24,7 @@ export default {
 
     // Create a renderer
     renderer.setSize(this.$el.clientWidth, this.$el.clientHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
     document.body.appendChild(renderer.domElement);
 
     // Create a camera
@@ -34,7 +35,7 @@ export default {
     camera.rotation.set(new THREE.Euler(this.cameraAngle.x, this.cameraAngle.y, this.cameraAngle.z));
 
 
-    renderer.setClearColor(new THREE.Color(0x000000));
+    renderer.setClearColor(new THREE.Color(0xFFFFFF));
 
 
     // Create a geometry

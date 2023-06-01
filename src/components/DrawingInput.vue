@@ -17,8 +17,8 @@ export default {
             isDrawing: false,
             stroke: {
                 show_stroke: true,
-                lineWidth: .001,
-                color: 0xFF0000
+                lineWidth: .01,
+                color: 0x000000,
             }
         };
     },
