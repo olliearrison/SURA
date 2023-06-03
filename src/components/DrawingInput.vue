@@ -1,8 +1,5 @@
 <template>
-    <div class="drawing-input" 
-        @mousemove="handleMouseMove" 
-        @mousedown="handleMouseDown" 
-        @mouseup="handleMouseUp"></div>
+    <div class="drawing-input" ></div>
 </template>
   
 <script>
@@ -21,6 +18,22 @@ export default {
                 color: 0x000000,
             }
         };
+    },
+    mounted (){
+
+
+        document.body.addEventListener('mouseup', () => {
+        this.handleMouseUp();
+        });
+
+        document.body.addEventListener('mousedown', (event) => {
+        this.handleMouseDown(event);
+        });
+
+        document.body.addEventListener('mousemove', (event) => {
+        this.handleMouseMove(event);
+        });
+
     },
     methods: {
         handleMouseMove(event) {

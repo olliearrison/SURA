@@ -1,6 +1,5 @@
 <template>
   <DrawingInput/>
-  <div id = "app">
   <GridBackground :camera-position="camera.position" :camera-angle="camera.angle"/>
   <div id = "arcballContainer">
     <Arcball ref="arcball" 
@@ -8,7 +7,6 @@
       :camera-angle="camera.angle"
       @camera-updated="updateCamera"/>
     </div>
-  </div>
 </template>
 
 
@@ -32,7 +30,7 @@ export default {
   data (){
     return {
       camera: {
-        position: { x: 0, y: 0, z: 2 },
+        position: { x: 0, y: 0, z: 5 },
         angle: { x: 0, y: 0, z: 0 }
       }
     };
