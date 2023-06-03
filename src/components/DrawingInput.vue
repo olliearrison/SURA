@@ -9,6 +9,7 @@ import { draw } from "./DrawHelper.js";
 
 export default {
     name: 'DrawingInput',
+
     data(){
         return {
             isDrawing: false,
@@ -27,7 +28,8 @@ export default {
         });
 
         document.body.addEventListener('mousedown', (event) => {
-        this.handleMouseDown(event);
+            console.log(this.valid(event));
+            this.handleMouseDown(event);
         });
 
         document.body.addEventListener('mousemove', (event) => {
@@ -36,6 +38,22 @@ export default {
 
     },
     methods: {
+        valid( event ) {
+            var rect = document.body.getBoundingClientRect();
+            var centerX = rect.left + rect.width / 2;
+            var centerY = rect.top + rect.height / 2;
+
+            const dx = event.clientX - centerX;
+            const dy = event.clientY - centerY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            console.log("hi", centerX, centerY);
+
+            if (distance < rect.width/2){
+                return false;
+            }
+            return true;
+        },
         handleMouseMove(event) {
             if (!this.isDrawing) return;
             let x = event.clientX;
