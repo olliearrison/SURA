@@ -42,7 +42,16 @@ export default {
             }
         });
 
+        document.body.addEventListener('pointermove', (event) => {
+            console.log(event.pressure);
+            if (event.pressure > 0){
+                this.stroke.lineWidth = event.pressure;
+            }
+
+        });
+
         document.body.addEventListener('mousemove', (event) => {
+            //console.log(event.pressure);
             if (this.inCanvas(event)) {
                 if (drawing) {
                     this.handleMouseMove(event);
@@ -80,7 +89,7 @@ export default {
             let y = event.clientY;
             // Assuming a 2D drawing, so Z is constant, but this could be modified as per the requirement.
             let z = 0;
-            draw.onMove(x, y, z);
+            draw.onMove(x, y, z, this.stroke);
         },
         handleMouseDown(event) {
             //console.log("mouse down");

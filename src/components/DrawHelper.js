@@ -10,7 +10,10 @@ let draw = {
             this.line = new MeshLine();
             this.geometry = new THREE.BufferGeometry();
             this.vertices = [];
+            this.lineWidths = [];
             this.geometry.setAttribute("position", new THREE.BufferAttribute(new Float32Array(this.vertices), 3));
+            //this.geometry.setAttribute("widthCallback", new THREE.BufferAttribute(new Float32Array(this.lineWidths), 1));
+            
             this.material = new MeshLineMaterial({
                 lineWidth: this.stroke.show_stroke ? this.stroke.lineWidth : .01,
                 sizeAttenuation: 1,
@@ -47,8 +50,8 @@ let draw = {
             raycaster.setFromCamera( vec, camera );
             var intersects = raycaster.intersectObject( plane );
             if (intersects.length > 0) {
-                console.log("intersects");
-                console.log(intersects[0].point);
+                //console.log("intersects");
+                //console.log(intersects[0].point);
                 return intersects[0].point;
             }
 
@@ -69,11 +72,21 @@ let draw = {
             scene.add(this.mesh);
         }
 
-        move(x, y, z) {
+        move(x, y, z, stroke) {
             var v3 = this.translate(x, y, z);
             this.vertices = [...this.vertices, v3.x, v3.y, v3.z];
             this.geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(this.vertices), 3));
-            this.line.setGeometry(this.geometry);  // This updates the MeshLine's geometry
+              // This updates the MeshLine's geometry
+            var width = stroke.lineWidth;
+            
+            this.lineWidths = [...this.lineWidths, width];
+            
+            var widthCallback = (p) => {
+                return this.lineWidths[Math.floor(p * this.lineWidths.length)];
+            };
+
+            this.line.setGeometry(this.geometry, widthCallback);
+
         }
 
         end() {
@@ -84,11 +97,11 @@ let draw = {
     },
     onStart: function (x, y, z, stroke) {
         this.l = new this.draw(stroke);
-        this.l.move(x, y, z);
+        this.l.move(x, y, z, stroke);
         this.l.start();
     },
-    onMove: function (x, y, z) {
-        this.l.move(x, y, z);
+    onMove: function (x, y, z, stroke) {
+        this.l.move(x, y, z, stroke);
     },
     onEnd: function () {
         this.l.end();
