@@ -5,10 +5,10 @@
 <script>
 import * as THREE from 'three';
 import { ArcballControls } from 'three/addons/controls/ArcballControls.js';
-import { arcRenderer } from '../App.vue';
+import { arcRenderer, camera } from '../App.vue';
 
 //export let renderer = new THREE.WebGLRenderer({alpha: true, antialias: true});
-export let camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
+
 let controls, scene;
 
 export default {
@@ -33,6 +33,7 @@ export default {
   },
   */
   mounted() {
+    
     
     arcRenderer.setSize(this.$el.clientWidth, this.$el.clientHeight);
     arcRenderer.setPixelRatio(window.devicePixelRatio);
@@ -63,6 +64,7 @@ export default {
 
 
     camera.position.set( 0, 0, 5 );
+    //camera.angle.set(0,0,0);
     this.windowResizeHandler();
     controls.update();
     this.animate();

@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { MeshLine, MeshLineMaterial, MeshLineRaycast } from "three.meshline";
-import { scene, camera } from "../App.vue";
+import { scene, camera, plane } from "../App.vue";
 
 let draw = {
     l: undefined,
@@ -43,6 +43,15 @@ let draw = {
                 - ( y / window.innerHeight ) * 2 + 1,
                 .5 );
 
+            const raycaster = new THREE.Raycaster();
+            raycaster.setFromCamera( vec, camera );
+            var intersects = raycaster.intersectObject( plane );
+            if (intersects.length > 0) {
+                console.log("intersects");
+                console.log(intersects[0].point);
+                return intersects[0].point;
+            }
+
             vec.unproject( camera );
 
             vec.sub( camera.position ).normalize();
@@ -52,6 +61,7 @@ let draw = {
             pos.copy( camera.position ).add( vec.multiplyScalar( distance ) );
 
             return pos;
+            
                     
         }
 

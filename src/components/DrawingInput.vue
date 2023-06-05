@@ -44,7 +44,9 @@ export default {
 
         document.body.addEventListener('mousemove', (event) => {
             if (this.inCanvas(event)) {
-                this.handleMouseMove(event);
+                if (drawing) {
+                    this.handleMouseMove(event);
+                }
             } else {
                 if (drawing){
                     this.handleMouseUp();
