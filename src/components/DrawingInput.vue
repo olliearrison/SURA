@@ -4,6 +4,7 @@
   
 <script>
 import { draw } from "./DrawHelper.js";
+import { arcRenderer } from '../App.vue';
 //import * as THREE from "three";
 //import { renderer, scene, camera } from "../App.vue";
 
@@ -21,33 +22,40 @@ export default {
         };
     },
     mounted (){
+        // document.body 
 
 
-        document.body.addEventListener('mouseup', () => {
-        this.handleMouseUp();
+        document.body.addEventListener('mouseup', (event) => {
+            if (this.inCanvas(event)){
+                this.handleMouseUp();
+            }
         });
 
         document.body.addEventListener('mousedown', (event) => {
-            console.log(this.valid(event));
-            this.handleMouseDown(event);
+            if (this.inCanvas(event)) {
+                this.handleMouseDown(event);
+            }
         });
 
         document.body.addEventListener('mousemove', (event) => {
-        this.handleMouseMove(event);
+            if (this.inCanvas(event)) {
+                this.handleMouseMove(event);
+            }
         });
+        //this.handleMouseMove(event);
+
+       
 
     },
     methods: {
-        valid( event ) {
-            var rect = document.body.getBoundingClientRect();
+        inCanvas( event ) {
+            var rect = arcRenderer.domElement.getBoundingClientRect();
             var centerX = rect.left + rect.width / 2;
             var centerY = rect.top + rect.height / 2;
 
             const dx = event.clientX - centerX;
             const dy = event.clientY - centerY;
             const distance = Math.sqrt(dx * dx + dy * dy);
-
-            console.log("hi", centerX, centerY);
 
             if (distance < rect.width/2){
                 return false;
@@ -63,7 +71,7 @@ export default {
             draw.onMove(x, y, z);
         },
         handleMouseDown(event) {
-            console.log("mouse down");
+            //console.log("mouse down");
             this.isDrawing = true;
             let x = event.clientX;
             let y = event.clientY;

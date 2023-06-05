@@ -1,4 +1,5 @@
 <template>
+  <UserInput/>
   <DrawingInput/>
   <GridBackground :camera-position="camera.position" :camera-angle="camera.angle"/>
   <div id = "arcballContainer">
@@ -11,18 +12,21 @@
 
 
 <script>
-import DrawingInput from './components/DrawingInput.vue'
-import GridBackground from './components/GridBackground.vue'
-import Arcball from './components/ArcballControl.vue'
+import UserInput from './components/UserInput.vue';
+import DrawingInput from './components/DrawingInput.vue';
+import GridBackground from './components/GridBackground.vue';
+import Arcball from './components/ArcballControl.vue';
 import * as THREE from 'three';
 
 export let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 export let renderer = new THREE.WebGLRenderer();
 export let scene = new THREE.Scene();
+export let arcRenderer = new THREE.WebGLRenderer({alpha: true, antialias: true});
 
 export default {
   name: 'App',
   components: {
+    UserInput,
     DrawingInput,
     Arcball,
     GridBackground

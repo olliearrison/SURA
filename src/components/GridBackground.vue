@@ -87,7 +87,7 @@ export default {
 },
   methods: {
     windowResizeHandler() {
-        console.log("hi");
+        //console.log("hi");
         const width = this.$el.clientWidth;
         const height = this.$el.clientHeight;
 

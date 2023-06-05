@@ -5,8 +5,9 @@
 <script>
 import * as THREE from 'three';
 import { ArcballControls } from 'three/addons/controls/ArcballControls.js';
+import { arcRenderer } from '../App.vue';
 
-export let renderer = new THREE.WebGLRenderer({alpha: true, antialias: true});
+//export let renderer = new THREE.WebGLRenderer({alpha: true, antialias: true});
 export let camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
 let controls, scene;
 
@@ -33,17 +34,17 @@ export default {
   */
   mounted() {
     
-    renderer.setSize(this.$el.clientWidth, this.$el.clientHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
+    arcRenderer.setSize(this.$el.clientWidth, this.$el.clientHeight);
+    arcRenderer.setPixelRatio(window.devicePixelRatio);
     //document.body.appendChild(renderer.domElement);
-    this.$el.appendChild(renderer.domElement);
+    this.$el.appendChild(arcRenderer.domElement);
 
     scene = new THREE.Scene();
 
     //this.$emit('update:camera', camera);
 
     //this.$emit('update:camera', camera.clone());
-    const domElement = this.$refs.arcball;
+    //const domElement = this.$refs.arcball;
 
     /*
     domElement.addEventListener('mousedown', () => {
@@ -56,7 +57,8 @@ export default {
     });
     */
 
-    controls = new ArcballControls( camera, domElement, scene );
+
+    controls = new ArcballControls( camera, arcRenderer.domElement, scene );
     controls.addEventListener('change', this.handleCameraChange);
 
 
@@ -81,7 +83,7 @@ export default {
         angle: cameraAngle
       });
 
-      renderer.render( scene, camera );
+      arcRenderer.render( scene, camera );
 
     },
 
@@ -98,12 +100,12 @@ export default {
       */
       
 
-      renderer.setSize(width, height);
+      arcRenderer.setSize(width, height);
     },
     animate() {
       requestAnimationFrame(this.animate);
       controls.update();
-      renderer.render(scene, camera);
+      arcRenderer.render(scene, camera);
     }
   }
 }

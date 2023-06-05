@@ -30,8 +30,11 @@ let draw = {
         }
 
         translate(x, y, z) {
+            if (z < 0) {
+                console.log("z < 0");
+            }
             // Translation from stackoverflow
-            console.log(x, y, z);
+            //console.log(x, y, z);
             var vec = new THREE.Vector3();
             var pos = new THREE.Vector3();
 
@@ -75,7 +78,6 @@ let draw = {
         this.l.start();
     },
     onMove: function (x, y, z) {
-        //console.log(x, y, z);
         this.l.move(x, y, z);
     },
     onEnd: function () {
