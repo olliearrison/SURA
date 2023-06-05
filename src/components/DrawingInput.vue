@@ -8,6 +8,9 @@ import { arcRenderer } from '../App.vue';
 //import * as THREE from "three";
 //import { renderer, scene, camera } from "../App.vue";
 
+let drawing = false;
+
+
 export default {
     name: 'DrawingInput',
 
@@ -28,11 +31,13 @@ export default {
         document.body.addEventListener('mouseup', (event) => {
             if (this.inCanvas(event)){
                 this.handleMouseUp();
+                drawing = false;
             }
         });
 
         document.body.addEventListener('mousedown', (event) => {
             if (this.inCanvas(event)) {
+                drawing = true;
                 this.handleMouseDown(event);
             }
         });
@@ -40,6 +45,11 @@ export default {
         document.body.addEventListener('mousemove', (event) => {
             if (this.inCanvas(event)) {
                 this.handleMouseMove(event);
+            } else {
+                if (drawing){
+                    this.handleMouseUp();
+                    drawing = false;
+                }
             }
         });
         //this.handleMouseMove(event);

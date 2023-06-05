@@ -16,7 +16,6 @@ export default {
             const dy = event.clientY - centerY;
             const distance = Math.sqrt(dx * dx + dy * dy);
 
-            //console.log("hi", centerX, centerY);
 
             if (distance < rect.width/2){
                 return false;

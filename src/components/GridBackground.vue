@@ -38,27 +38,7 @@ export default {
     renderer.setClearColor(new THREE.Color(0xFFFFFF));
 
 
-    // Create a geometry
-    const geometry = new THREE.BoxGeometry(1, 1, 1);
-
-    const edges = new THREE.EdgesGeometry(geometry);
-
-    // Create a material
-
-    const lineMaterial = new THREE.LineBasicMaterial({ color: 0x00ff00 });
-
-    // Create a mesh
-
-    const cube = new THREE.LineSegments(edges, lineMaterial);
-
-    // Add the mesh to the scene
-
-
-    scene.add(cube);
-
     const grid = InfiniteGridHelper();
-    grid.rotation.x += .1;
-    grid.rotation.y += .2;
 
     scene.add(grid);
 
@@ -68,8 +48,6 @@ export default {
         requestAnimationFrame(animate);
 
         // Rotate the cube
-        cube.rotation.x += rotationSpeed;
-        cube.rotation.y += rotationSpeed;
 
         camera.position.copy(self.cameraPosition);
         camera.rotation.set(self.cameraAngle.x, self.cameraAngle.y, self.cameraAngle.z);
@@ -87,7 +65,6 @@ export default {
 },
   methods: {
     windowResizeHandler() {
-        //console.log("hi");
         const width = this.$el.clientWidth;
         const height = this.$el.clientHeight;
 

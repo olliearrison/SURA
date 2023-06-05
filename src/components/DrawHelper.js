@@ -41,7 +41,7 @@ let draw = {
             vec.set(
                 ( x / window.innerWidth ) * 2 - 1,
                 - ( y / window.innerHeight ) * 2 + 1,
-                0.5 );
+                .5 );
 
             vec.unproject( camera );
 

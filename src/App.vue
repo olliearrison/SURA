@@ -39,6 +39,18 @@ export default {
       },
     };
   },
+  mounted (){
+    const geometry = new THREE.PlaneGeometry( 3, 3 );
+    const material = new THREE.MeshBasicMaterial( {
+      color: 0x000000, 
+      side: THREE.DoubleSide,
+      opacity: 0.3,
+      transparent: true,
+    } );
+    const plane = new THREE.Mesh( geometry, material );
+    scene.add( plane );
+
+  },
   methods: {
     updateCamera({ position, angle }) {
       // Update the camera position and angle based on the emitted data
