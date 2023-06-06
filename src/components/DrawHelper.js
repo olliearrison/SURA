@@ -56,15 +56,11 @@ let draw = {
             }
 
             vec.unproject( camera );
-
             vec.sub( camera.position ).normalize();
-
             var distance = - camera.position.z / vec.z;
-
             pos.copy( camera.position ).add( vec.multiplyScalar( distance ) );
-
+            console.log(pos);
             return pos;
-            
                     
         }
 
@@ -74,6 +70,11 @@ let draw = {
 
         move(x, y, z, stroke) {
             var v3 = this.translate(x, y, z);
+            if (v3 == -1) {
+                this.end();
+                this.start();
+            }
+
             this.vertices = [...this.vertices, v3.x, v3.y, v3.z];
             this.geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(this.vertices), 3));
               // This updates the MeshLine's geometry

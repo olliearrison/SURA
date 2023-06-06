@@ -10,7 +10,7 @@ function InfiniteGridHelper() {
     const size1 = 1;
     const size2 = 5;
 
-    const distance = 50;
+    const distance = 80;
 
     const material = new THREE.ShaderMaterial({
 

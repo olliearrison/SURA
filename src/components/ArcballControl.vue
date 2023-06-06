@@ -42,21 +42,6 @@ export default {
 
     scene = new THREE.Scene();
 
-    //this.$emit('update:camera', camera);
-
-    //this.$emit('update:camera', camera.clone());
-    //const domElement = this.$refs.arcball;
-
-    /*
-    domElement.addEventListener('mousedown', () => {
-      console.log('mousedown picked up');
-    });
-
-
-    document.body.addEventListener('mouseup', () => {
-      console.log('mouseup picked up');
-    });
-    */
 
 
     controls = new ArcballControls( camera, arcRenderer.domElement, scene );
@@ -93,16 +78,8 @@ export default {
       const width = this.$el.clientWidth;
       const height = this.$el.clientHeight;
 
-      /*
-      this.$emit('update:camera', {
-        aspect: width / height,
-        width: width,
-        height: height
-      });
-      */
-      
-
       arcRenderer.setSize(width, height);
+      arcRenderer.setPixelRatio(window.devicePixelRatio);
     },
     animate() {
       requestAnimationFrame(this.animate);
@@ -118,7 +95,7 @@ export default {
   position: absolute;
   top: 10%;
   right: 5%;
-  width: 150px;  /* Adjust these as necessary */
-  height: 150px; /* Adjust these as necessary */
+  width: 20%;
+  height: 20%;
 }
 </style>

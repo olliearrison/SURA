@@ -5,7 +5,7 @@
 <script>
 import * as THREE from 'three';
 import InfiniteGridHelper from "./InfiniteGridHelper.js";
-import { renderer, camera, scene, plane } from '../App.vue';
+import { renderer, camera, scene, plane, planeL } from '../App.vue';
 
 
 export default {
@@ -52,6 +52,8 @@ export default {
         camera.position.copy(self.cameraPosition);
         camera.rotation.set(self.cameraAngle.x, self.cameraAngle.y, self.cameraAngle.z);
         plane.rotation.set(self.cameraAngle.x, self.cameraAngle.y, self.cameraAngle.z);
+        planeL.rotation.set(self.cameraAngle.x, self.cameraAngle.y, self.cameraAngle.z);
+
         //plane.position.set(self.cameraPosition.x-10, self.cameraPosition.y-10, self.cameraPosition.z-10);
 
         // Render the scene with the camera

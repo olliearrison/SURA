@@ -22,15 +22,25 @@ export let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.i
 export let renderer = new THREE.WebGLRenderer();
 export let scene = new THREE.Scene();
 export let arcRenderer = new THREE.WebGLRenderer({alpha: true, antialias: true});
-const geometry = new THREE.PlaneGeometry( 3, 3 );
+const geometry = new THREE.PlaneGeometry( 4, 4 );
     const material = new THREE.MeshBasicMaterial( {
       color: 0x000000, 
       side: THREE.DoubleSide,
-      opacity: 0.1,
+      opacity: 0.15,
       transparent: true,
     } );
 export let plane = new THREE.Mesh( geometry, material );
-    
+
+
+const geometryL = new THREE.PlaneGeometry( 300, 300 );
+    const materialL = new THREE.MeshBasicMaterial( {
+      color: 0x000000, 
+      side: THREE.DoubleSide,
+      opacity: 0.01,
+      transparent: true,
+    } );
+export let planeL = new THREE.Mesh( geometryL, materialL );
+
 
 export default {
   name: 'App',
@@ -50,7 +60,9 @@ export default {
   },
   mounted (){
     plane.rotateX(Math.PI/2);
+    planeL.rotateX(Math.PI/2);
     scene.add( plane );
+    //scene.add( planeL);
 
   },
   methods: {

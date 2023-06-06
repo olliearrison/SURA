@@ -19,7 +19,7 @@ export default {
             isDrawing: false,
             stroke: {
                 show_stroke: true,
-                lineWidth: .01,
+                lineWidth: .25,
                 color: 0x000000,
             }
         };
@@ -45,7 +45,7 @@ export default {
         document.body.addEventListener('pointermove', (event) => {
             console.log(event.pressure);
             if (event.pressure > 0){
-                this.stroke.lineWidth = event.pressure;
+                this.stroke.lineWidth = event.pressure * .5;
             }
 
         });
