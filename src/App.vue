@@ -1,4 +1,27 @@
 <template>
+  <v-btn>
+    <v-icon>mdi-thumb-up</v-icon>
+  </v-btn>
+  <v-row class="d-flex justify-start align-center" style="height: 100vh;">
+  <v-col cols="12" sm="3" md="1" lg="1">
+    <v-card class="mx-auto" rounded>
+      <v-list class="grey darken-3">
+        <!-- Your components go here -->
+        <v-list-item>
+          <v-list-item-content>
+            <v-spacer></v-spacer>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item>
+          <v-list-item-content>
+            <v-slider direction="vertical"></v-slider>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-card>
+  </v-col>
+</v-row>
+
   <UserInput/>
   <DrawingInput/>
   <GridBackground :camera-position="camera.position" :camera-angle="camera.angle"/>
@@ -41,6 +64,9 @@ const geometryL = new THREE.PlaneGeometry( 300, 300 );
     } );
 export let planeL = new THREE.Mesh( geometryL, materialL );
 
+
+//import Vuetify from 'vuetify';
+import 'vuetify/dist/vuetify.min.css';
 
 export default {
   name: 'App',
@@ -90,6 +116,7 @@ export default {
 <style>
 body {
   margin: 0;
+  overflow: hidden; /* Disable scroll */
 }
 
 #app {
@@ -98,10 +125,15 @@ body {
   position: absolute;
   width: 100vw;
   height: 100vh;
+  overflow: hidden; /* Disable scroll */
 }
 
 .drawing-input {
   position: relative;
+}
+
+#arcballContainer {
+  height: calc(100vh - 1em); /* Adjust the height as needed */
 }
 
 </style>

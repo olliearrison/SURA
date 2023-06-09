@@ -39,7 +39,7 @@ let draw = {
             // Translation from stackoverflow
             //console.log(x, y, z);
             var vec = new THREE.Vector3();
-            var pos = new THREE.Vector3();
+            //var pos = new THREE.Vector3();
 
             vec.set(
                 ( x / window.innerWidth ) * 2 - 1,
@@ -53,14 +53,19 @@ let draw = {
                 //console.log("intersects");
                 //console.log(intersects[0].point);
                 return intersects[0].point;
-            }
+            } 
+            
 
+            return false, -1, -1;
+
+            /*
             vec.unproject( camera );
             vec.sub( camera.position ).normalize();
             var distance = - camera.position.z / vec.z;
             pos.copy( camera.position ).add( vec.multiplyScalar( distance ) );
             console.log(pos);
             return pos;
+            */
                     
         }
 
@@ -69,13 +74,9 @@ let draw = {
         }
 
         move(x, y, z, stroke) {
-            var v3 = this.translate(x, y, z);
-            if (v3 == -1) {
-                this.end();
-                this.start();
-            }
+            //var v3 = this.translate(x, y, z);
 
-            this.vertices = [...this.vertices, v3.x, v3.y, v3.z];
+            this.vertices = [...this.vertices, x, y, z];
             this.geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(this.vertices), 3));
               // This updates the MeshLine's geometry
             var width = stroke.lineWidth;
@@ -97,12 +98,37 @@ let draw = {
 
     },
     onStart: function (x, y, z, stroke) {
+        //! move translate function to here
+        //! add a way to handle the case where the hit is outside of
+        //! the plane
+        
+
         this.l = new this.draw(stroke);
-        this.l.move(x, y, z, stroke);
+
+        var coor = this.l.translate(x, y, z);
+        if (coor.x == false) {
+            this.l.end();
+            return;
+        }
+        this.l.move(coor.x, coor.y, coor.z, stroke);
         this.l.start();
     },
     onMove: function (x, y, z, stroke) {
-        this.l.move(x, y, z, stroke);
+
+        
+        if(this.l !== undefined) {
+            var coor = this.l.translate(x, y, z);
+            if (coor.x == false) {
+                this.l.end();
+                return;
+            }
+            this.l.move(coor.x, coor.y, coor.z, stroke);
+        } else {
+            console.log('The l object is not defined.');
+        }
+        
+
+        //this.l.move(coor.x, coor.y, coor.z, stroke);
     },
     onEnd: function () {
         this.l.end();
