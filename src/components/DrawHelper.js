@@ -32,15 +32,12 @@ let draw = {
             this.mesh.raycast = MeshLineRaycast;
         }
 
-        translate(x, y, z) {
-            if (z < 0) {
-                console.log("z < 0");
-            }
-            // Translation from stackoverflow
-            //console.log(x, y, z);
-            var vec = new THREE.Vector3();
-            //var pos = new THREE.Vector3();
 
+        translate(x, y) {
+          
+            var vec = new THREE.Vector3();
+    
+            // from stackoverflow
             vec.set(
                 ( x / window.innerWidth ) * 2 - 1,
                 - ( y / window.innerHeight ) * 2 + 1,
@@ -49,23 +46,9 @@ let draw = {
             const raycaster = new THREE.Raycaster();
             raycaster.setFromCamera( vec, camera );
             var intersects = raycaster.intersectObject( plane );
-            if (intersects.length > 0) {
-                //console.log("intersects");
-                //console.log(intersects[0].point);
-                return intersects[0].point;
-            } 
             
-
-            return false, -1, -1;
-
-            /*
-            vec.unproject( camera );
-            vec.sub( camera.position ).normalize();
-            var distance = - camera.position.z / vec.z;
-            pos.copy( camera.position ).add( vec.multiplyScalar( distance ) );
-            console.log(pos);
-            return pos;
-            */
+            const intersectPoints = intersects.map((intersection) => intersection.point);
+            return intersectPoints;
                     
         }
 
@@ -78,6 +61,7 @@ let draw = {
 
             this.vertices = [...this.vertices, x, y, z];
             this.geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(this.vertices), 3));
+            //console.log(this.vertices);
               // This updates the MeshLine's geometry
             var width = stroke.lineWidth;
             
@@ -92,43 +76,39 @@ let draw = {
         }
 
         end() {
-            this.geometry.computeBoundingBox();
+            if (this.vertices.length >= 3) {
+                this.geometry.computeBoundingBox();
+              }
         }
 
 
     },
-    onStart: function (x, y, z, stroke) {
-        //! move translate function to here
-        //! add a way to handle the case where the hit is outside of
-        //! the plane
+    onStart: function (x, y, stroke) {
         
 
         this.l = new this.draw(stroke);
 
-        var coor = this.l.translate(x, y, z);
-        if (coor.x == false) {
-            this.l.end();
-            return;
+        var coor = this.l.translate(x, y);
+
+        if (coor.length > 0)
+        {
+            this.l.move(coor[0].x, coor[0].y, coor[0].z, stroke);
+            this.l.start();
         }
-        this.l.move(coor.x, coor.y, coor.z, stroke);
-        this.l.start();
+        
     },
-    onMove: function (x, y, z, stroke) {
+    onMove: function (x, y, stroke) {
 
         
         if(this.l !== undefined) {
-            var coor = this.l.translate(x, y, z);
-            if (coor.x == false) {
-                this.l.end();
-                return;
+            var coor = this.l.translate(x, y);
+
+            if (coor.length > 0)
+            {
+                this.l.move(coor[0].x, coor[0].y, coor[0].z, stroke);
             }
-            this.l.move(coor.x, coor.y, coor.z, stroke);
-        } else {
-            console.log('The l object is not defined.');
         }
         
-
-        //this.l.move(coor.x, coor.y, coor.z, stroke);
     },
     onEnd: function () {
         this.l.end();

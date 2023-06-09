@@ -1,7 +1,4 @@
 <template>
-  <v-btn>
-    <v-icon>mdi-thumb-up</v-icon>
-  </v-btn>
   <v-row class="d-flex justify-start align-center" style="height: 100vh;">
   <v-col cols="12" sm="3" md="1" lg="1">
     <v-card class="mx-auto" rounded>
@@ -45,7 +42,7 @@ export let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.i
 export let renderer = new THREE.WebGLRenderer();
 export let scene = new THREE.Scene();
 export let arcRenderer = new THREE.WebGLRenderer({alpha: true, antialias: true});
-const geometry = new THREE.PlaneGeometry( 4, 4 );
+const geometry = new THREE.PlaneGeometry( 5, 5 );
     const material = new THREE.MeshBasicMaterial( {
       color: 0x000000, 
       side: THREE.DoubleSide,
@@ -130,6 +127,9 @@ body {
 
 .drawing-input {
   position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
 #arcballContainer {

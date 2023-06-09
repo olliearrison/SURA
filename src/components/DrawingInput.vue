@@ -1,5 +1,9 @@
 <template>
-    <div class="drawing-input" ></div>
+    <div class="drawing-input">
+        
+        <button @click="toggleEraserMode">{{ isEraserMode ? 'Disable Eraser Mode' : 'Enable Eraser Mode' }}</button>
+    </div>
+    
 </template>
   
 <script>
@@ -17,6 +21,7 @@ export default {
     data(){
         return {
             isDrawing: false,
+            isEraserMode: false,
             stroke: {
                 show_stroke: true,
                 lineWidth: .25,
@@ -43,7 +48,7 @@ export default {
         });
 
         document.body.addEventListener('pointermove', (event) => {
-            console.log(event.pressure);
+            //console.log(event.pressure);
             if (event.pressure > 0){
                 this.stroke.lineWidth = event.pressure * .5;
             }
@@ -88,21 +93,29 @@ export default {
             let x = event.clientX;
             let y = event.clientY;
             // Assuming a 2D drawing, so Z is constant, but this could be modified as per the requirement.
-            let z = 0;
-            draw.onMove(x, y, z, this.stroke);
+            draw.onMove(x, y, this.stroke);
         },
         handleMouseDown(event) {
             //console.log("mouse down");
             this.isDrawing = true;
             let x = event.clientX;
             let y = event.clientY;
-            let z = 0;
-            draw.onStart(x, y, z, this.stroke);
+            draw.onStart(x, y, this.stroke);
         },
         handleMouseUp() {
             this.isDrawing = false;
             draw.onEnd();
-        }
+        },
+        handleClick() {
+            
+        // Your function logic here
+        console.log('Button clicked!');
+        console.log("hiiiii");
+        },
+        toggleEraserMode() {
+            
+        this.isEraserMode = !this.isEraserMode;
+    },
     }
 }
 </script>
