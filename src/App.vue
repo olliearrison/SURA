@@ -1,6 +1,6 @@
 <template>
   <v-row class="d-flex justify-start align-center" style="height: 100vh;">
-  <v-col cols="12" sm="3" md="1" lg="1">
+  <v-col cols="12" sm="1" md="4" lg="4">
     <v-card class="mx-auto" rounded>
       <v-list class="grey darken-3">
         <!-- Your components go here -->

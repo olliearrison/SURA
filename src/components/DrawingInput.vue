@@ -1,7 +1,10 @@
 <template>
     <div class="drawing-input">
-        
-        <button @click="toggleEraserMode">{{ isEraserMode ? 'Disable Eraser Mode' : 'Enable Eraser Mode' }}</button>
+        <v-btn class="fixed-button" ref="eraserButton" @click="toggleEraserMode" large>
+            <v-icon>
+                {{ stroke.eraser ? 'mdi-eraser' : 'mdi-brush-outline' }}
+            </v-icon>
+        </v-btn>
     </div>
     
 </template>
@@ -21,16 +24,25 @@ export default {
     data(){
         return {
             isDrawing: false,
-            isEraserMode: false,
             stroke: {
                 show_stroke: true,
                 lineWidth: .25,
                 color: 0x000000,
+                eraser: false,
+                
             }
         };
     },
     mounted (){
         // document.body 
+        /*
+        const button = this.$refs.eraserButton;
+        
+        button.addEventListener('click', () => {
+            console.log("pointer down");
+            this.isEraserMode = !this.isEraserMode;
+        });
+        */
 
 
         document.body.addEventListener('mouseup', (event) => {
@@ -113,9 +125,9 @@ export default {
         console.log("hiiiii");
         },
         toggleEraserMode() {
-            
-        this.isEraserMode = !this.isEraserMode;
-    },
+            this.stroke.eraser = !this.stroke.eraser;
+        }
+        
     }
 }
 </script>
@@ -125,4 +137,13 @@ export default {
     width: 100%;
     height: 100%;
 }
+
+.fixed-button {
+  position: fixed;
+  top: 20px; /* Adjust the bottom value as needed */
+  left: 20px; /* Adjust the right value as needed */
+  z-index: 999; /* Set an appropriate z-index if necessary */
+  /* Add any other desired styles */
+}
+
 </style>

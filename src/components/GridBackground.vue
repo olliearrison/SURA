@@ -7,6 +7,7 @@ import * as THREE from 'three';
 import InfiniteGridHelper from "./InfiniteGridHelper.js";
 import { renderer, camera, scene, plane, planeL } from '../App.vue';
 
+export let grid = InfiniteGridHelper();
 
 export default {
   name: 'GridBackground',
@@ -38,7 +39,6 @@ export default {
     renderer.setClearColor(new THREE.Color(0xFFFFFF));
 
 
-    const grid = InfiniteGridHelper();
 
     scene.add(grid);
 
