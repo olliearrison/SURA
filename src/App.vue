@@ -1,34 +1,36 @@
 <template>
-  <v-row class="d-flex justify-start align-center" style="height: 100vh;">
-  <v-col cols="12" sm="1" md="4" lg="4">
-    <v-card class="mx-auto" rounded>
-      <v-list class="grey darken-3">
-        <!-- Your components go here -->
-        <v-list-item>
-          <v-list-item-content>
-            <v-spacer></v-spacer>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item>
-          <v-list-item-content>
-            <v-slider direction="vertical"></v-slider>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-    </v-card>
-  </v-col>
-</v-row>
-
-  <UserInput/>
-  <DrawingInput/>
-  <GridBackground :camera-position="camera.position" :camera-angle="camera.angle"/>
-  <div id = "arcballContainer">
-    <Arcball ref="arcball" 
-      :camera-position="camera.position"
-      :camera-angle="camera.angle"
-      @camera-updated="updateCamera"/>
+  <div>
+    <v-row class="d-flex justify-start align-center" style="height: 100vh;">
+      <v-col cols="12" sm="1" md="2" lg="2">
+        <v-card class="mx-auto" rounded color="blue">
+          <v-list>
+            <!-- Your components go here -->
+            <v-list-item>
+              <v-list-item-content>
+                <v-spacer></v-spacer>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-content>
+                <v-slider direction="vertical"></v-slider>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+        </v-card>
+      </v-col>
+    </v-row>
+    <UserInput/>
+    <DrawingInput/>
+    <GridBackground :camera-position="camera.position" :camera-angle="camera.angle"/>
+    <div id = "arcballContainer">
+      <Arcball ref="arcball" 
+        :camera-position="camera.position"
+        :camera-angle="camera.angle"
+        @camera-updated="updateCamera"/>
     </div>
+  </div>
 </template>
+
 
 
 <script>
@@ -42,6 +44,7 @@ export let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.i
 export let renderer = new THREE.WebGLRenderer();
 export let scene = new THREE.Scene();
 export let arcRenderer = new THREE.WebGLRenderer({alpha: true, antialias: true});
+export let drawRenderer = new THREE.WebGLRenderer({alpha: true});
 const geometry = new THREE.PlaneGeometry( 5, 5 );
     const material = new THREE.MeshBasicMaterial( {
       color: 0x000000, 
@@ -51,15 +54,7 @@ const geometry = new THREE.PlaneGeometry( 5, 5 );
     } );
 export let plane = new THREE.Mesh( geometry, material );
 
-
-const geometryL = new THREE.PlaneGeometry( 300, 300 );
-    const materialL = new THREE.MeshBasicMaterial( {
-      color: 0x000000, 
-      side: THREE.DoubleSide,
-      opacity: 0.01,
-      transparent: true,
-    } );
-export let planeL = new THREE.Mesh( geometryL, materialL );
+export let drawSceneList = [new THREE.Scene()];
 
 
 //import Vuetify from 'vuetify';
@@ -83,8 +78,9 @@ export default {
   },
   mounted (){
     plane.rotateX(Math.PI/2);
-    planeL.rotateX(Math.PI/2);
+    //planeL.rotateX(Math.PI/2);
     scene.add( plane );
+    
     //scene.add( planeL);
 
   },

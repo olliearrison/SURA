@@ -1,7 +1,8 @@
 import * as THREE from "three";
 import { MeshLine, MeshLineMaterial, MeshLineRaycast } from "three.meshline";
-import { scene, camera, plane } from "../App.vue";
+import { drawSceneList, camera, plane } from "../App.vue";
 import { grid } from "./GridBackground.vue";
+import { index } from './DrawingInput.vue';
 
 let draw = {
     l: undefined,
@@ -54,7 +55,7 @@ let draw = {
         }
 
         start() {
-            scene.add(this.mesh);
+            drawSceneList[index].add(this.mesh);
         }
 
         move(x, y, z, stroke) {
@@ -91,13 +92,13 @@ let draw = {
 
 
             raycaster.setFromCamera( vec, camera );
-            var intersects = raycaster.intersectObjects(scene.children, false);
+            var intersects = raycaster.intersectObjects(drawSceneList[index].children, false);
             
             //const intersectPoints = intersects.map((intersection) => intersection.point);
             for (var i = 0; i < intersects.length; i++) {
                 var intersectedObject = intersects[i].object;
                 if (intersectedObject !== plane && intersectedObject !== grid) {
-                    scene.remove(intersectedObject);
+                    drawSceneList[index].remove(intersectedObject);
                 }
                 
             }
@@ -114,6 +115,7 @@ let draw = {
 
     },
     onStart: function (x, y, stroke) {
+        console.log(index);
         
         if (stroke.eraser){
             this.l.erase(x, y);

@@ -5,16 +5,32 @@
                 {{ stroke.eraser ? 'mdi-eraser' : 'mdi-brush-outline' }}
             </v-icon>
         </v-btn>
+        
+        <v-row class="bottom-buttons">
+            <v-btn @click="backward" large>
+                <v-icon>
+                    mdi-arrow-left
+                </v-icon>
+            </v-btn>
+            <v-spacer></v-spacer>
+            <v-btn @click="forward" large>
+                <v-icon>
+                    mdi-arrow-right
+                </v-icon>
+            </v-btn>
+        </v-row>
     </div>
     
 </template>
   
 <script>
 import { draw } from "./DrawHelper.js";
-import { arcRenderer } from '../App.vue';
+import { arcRenderer, drawSceneList } from '../App.vue';
+import * as THREE from 'three';
 //import * as THREE from "three";
 //import { renderer, scene, camera } from "../App.vue";
 
+export let index = 0;
 let drawing = false;
 
 
@@ -118,14 +134,22 @@ export default {
             this.isDrawing = false;
             draw.onEnd();
         },
-        handleClick() {
-            
-        // Your function logic here
-        console.log('Button clicked!');
-        console.log("hiiiii");
-        },
         toggleEraserMode() {
             this.stroke.eraser = !this.stroke.eraser;
+        },
+        backward() {
+            if (index > 0){
+                index--;
+            }
+            
+        },
+        forward() {
+            if (index < drawSceneList.length - 1){
+                index++;
+            } else {
+                drawSceneList.push(new THREE.Scene());
+                index++;
+            }
         }
         
     }
@@ -142,6 +166,15 @@ export default {
   position: fixed;
   top: 20px; /* Adjust the bottom value as needed */
   left: 20px; /* Adjust the right value as needed */
+  z-index: 999; /* Set an appropriate z-index if necessary */
+  /* Add any other desired styles */
+}
+
+.bottom-buttons {
+  position: fixed;
+  width: 15%;
+  bottom: 40px; /* Adjust the bottom value as needed */
+  left: 40px; /* Adjust the right value as needed */
   z-index: 999; /* Set an appropriate z-index if necessary */
   /* Add any other desired styles */
 }

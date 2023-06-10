@@ -1,11 +1,15 @@
 <template>
-    <div class="grid"> </div>
+    <div class="grid">
+        <div id="rendererElement" class="renderer"></div>
+        <div id="drawRendererElement" class="renderer"></div>
+    </div>
 </template>
 
 <script>
 import * as THREE from 'three';
 import InfiniteGridHelper from "./InfiniteGridHelper.js";
-import { renderer, camera, scene, plane, planeL } from '../App.vue';
+import { renderer, camera, scene, plane, drawSceneList, drawRenderer } from '../App.vue';
+import { index } from './DrawingInput.vue';
 
 export let grid = InfiniteGridHelper();
 
@@ -26,8 +30,16 @@ export default {
     // Create a renderer
     renderer.setSize(this.$el.clientWidth, this.$el.clientHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
-    document.body.appendChild(renderer.domElement);
+    drawRenderer.setSize(this.$el.clientWidth, this.$el.clientHeight);
+    drawRenderer.setPixelRatio(window.devicePixelRatio);
 
+    let rendererElement = document.getElementById('rendererElement');
+    let drawRendererElement = document.getElementById('drawRendererElement');
+    rendererElement.appendChild(renderer.domElement);
+    drawRendererElement.appendChild(drawRenderer.domElement);
+
+    //document.body.appendChild(renderer.domElement);
+    //document.body.appendChild(drawRenderer.domElement);
     // Create a camera
     
     //camera = camera;
@@ -35,9 +47,9 @@ export default {
     camera.position.set(this.cameraPosition.x, this.cameraPosition.y, this.cameraPosition.z);
     camera.rotation.set(new THREE.Euler(this.cameraAngle.x, this.cameraAngle.y, this.cameraAngle.z));
 
-
+    
     renderer.setClearColor(new THREE.Color(0xFFFFFF));
-
+    //renderer.setClearAlpha(0);
 
 
     scene.add(grid);
@@ -52,12 +64,15 @@ export default {
         camera.position.copy(self.cameraPosition);
         camera.rotation.set(self.cameraAngle.x, self.cameraAngle.y, self.cameraAngle.z);
         plane.rotation.set(self.cameraAngle.x, self.cameraAngle.y, self.cameraAngle.z);
-        planeL.rotation.set(self.cameraAngle.x, self.cameraAngle.y, self.cameraAngle.z);
+        //planeL.rotation.set(self.cameraAngle.x, self.cameraAngle.y, self.cameraAngle.z);
 
         //plane.position.set(self.cameraPosition.x-10, self.cameraPosition.y-10, self.cameraPosition.z-10);
 
         // Render the scene with the camera
+        
         renderer.render(scene, camera);
+        drawRenderer.render(drawSceneList[index], camera);
+        
         
     }
     this.windowResizeHandler();
@@ -75,6 +90,7 @@ export default {
         camera.aspect = width / height;
         camera.updateProjectionMatrix();
         renderer.setSize(width, height);
+        drawRenderer.setSize(width, height);
     }
   }
 }
@@ -89,4 +105,13 @@ export default {
   top: 0;
   left: 0;
 }
+
+.renderer {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
 </style>
