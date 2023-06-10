@@ -18,6 +18,12 @@
                     mdi-arrow-right
                 </v-icon>
             </v-btn>
+            <v-spacer></v-spacer>
+            <v-btn @click="play" large>
+                <v-icon>
+                    mdi-arrow-right
+                </v-icon>
+            </v-btn>
         </v-row>
     </div>
     
@@ -33,6 +39,9 @@ import * as THREE from 'three';
 export let index = 0;
 let drawing = false;
 
+let rotatingInterval = null;  // Interval to rotate index
+//let rotatingCondition = false;
+
 
 export default {
     name: 'DrawingInput',
@@ -40,6 +49,7 @@ export default {
     data(){
         return {
             isDrawing: false,
+            rotatingCondition: false,
             stroke: {
                 show_stroke: true,
                 lineWidth: .25,
@@ -50,6 +60,24 @@ export default {
         };
     },
     mounted (){
+        this.$watch(() => this.rotatingCondition, (newValue) => {
+            console.log("hello");
+            if(newValue){
+                if(rotatingInterval == null){
+                    console.log("hello");
+                    // Rotate the index 5 times per second
+                    rotatingInterval = setInterval(() => {
+                        index = (index + 1) % drawSceneList.length;
+                    }, 1000/5); // 1000 ms (1s) divided by 5 gives 200 ms
+                }
+            }else{
+                // Stop rotating the index
+                if(rotatingInterval != null){
+                    clearInterval(rotatingInterval);
+                    rotatingInterval = null;
+                }
+            }
+        });
         // document.body 
         /*
         const button = this.$refs.eraserButton;
@@ -150,6 +178,10 @@ export default {
                 drawSceneList.push(new THREE.Scene());
                 index++;
             }
+        },
+        play() {
+            console.log(!this.rotatingCondition);
+            this.rotatingCondition = !this.rotatingCondition;
         }
         
     }
