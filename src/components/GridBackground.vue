@@ -78,6 +78,28 @@ export default {
         camera.position.copy(self.cameraPosition);
         camera.rotation.set(self.cameraAngle.x, self.cameraAngle.y, self.cameraAngle.z);
         plane.rotation.set(self.cameraAngle.x, self.cameraAngle.y, self.cameraAngle.z);
+
+        const frontVector = new THREE.Vector3(0, 0, 4); // Direction in front of the camera
+        const planePosition = camera.position.clone().add(camera.getWorldDirection(new THREE.Vector3()).multiplyScalar(frontVector.z));
+        plane.position.copy(planePosition);
+
+        //plane.position.copy(self.camera.position);
+        //plane.position.copy(camera.getWorldDirection().multiplyScalar(5));
+
+       // plane.lookAt(camera.position.clone().add(camera.getWorldDirection(new THREE.Vector3())));
+
+        //const offset = new THREE.Vector3(-1, -1, -4); // Adjust the value based on your desired distance
+        //const planePosition = camera.position.clone().add(camera.getWorldDirection(new THREE.Vector3()).multiplyScalar(offset.z));
+        //plane.position.copy(planePosition);
+
+        // Calculate the rotation to make the plane perpendicular to the camera
+        //const target = planePosition.clone().add(camera.getWorldDirection(new THREE.Vector3()));
+        //plane.lookAt(target);
+
+        // make the plane.position plus 5 perpendicular to the camera
+        //plane.position.copy(self.cameraPosition);
+        //plane.position.add(camera.getWorldDirection().multiplyScalar(5));
+        
         //planeL.rotation.set(self.cameraAngle.x, self.cameraAngle.y, self.cameraAngle.z);
 
         //plane.position.set(self.cameraPosition.x-10, self.cameraPosition.y-10, self.cameraPosition.z-10);

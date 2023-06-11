@@ -47,9 +47,9 @@ export let arcRenderer = new THREE.WebGLRenderer({alpha: true, antialias: true})
 export let drawRenderer = new THREE.WebGLRenderer({alpha: true});
 const geometry = new THREE.PlaneGeometry( 5, 5 );
     const material = new THREE.MeshBasicMaterial( {
-      color: 0x000000, 
+      color: 0x745DD9, 
       side: THREE.DoubleSide,
-      opacity: 0.15,
+      opacity: 0.25,
       transparent: true,
     } );
 export let plane = new THREE.Mesh( geometry, material );
