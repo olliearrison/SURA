@@ -8,6 +8,7 @@
 <script>
 import * as THREE from 'three';
 import InfiniteGridHelper from "./InfiniteGridHelper.js";
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { renderer, camera, scene, plane, drawSceneList, drawRenderer } from '../App.vue';
 import { index } from './DrawingInput.vue';
 
@@ -53,6 +54,19 @@ export default {
 
 
     scene.add(grid);
+
+    const loader = new GLTFLoader();
+
+    loader.load( './model.glb', function ( gltf ) {
+      console.log("getting model");
+
+      scene.add( gltf.scene );
+
+    }, undefined, function ( error ) {
+
+      console.error( error );
+
+    } );
 
     //let rotationSpeed = 0.01; // Initial rotation speed
     const self = this;
