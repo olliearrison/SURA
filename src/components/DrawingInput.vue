@@ -168,15 +168,20 @@ export default {
         backward() {
             if (index > 0){
                 index--;
+                console.log(drawSceneList[index].children.length);
             }
             
         },
         forward() {
             if (index < drawSceneList.length - 1){
                 index++;
+                console.log(drawSceneList[index].children.length);
             } else {
-                drawSceneList.push(new THREE.Scene());
+                const newScene = new THREE.Scene();
+                //newScene.add(plane);
+                drawSceneList.push(newScene);
                 index++;
+                console.log(drawSceneList[index].children.length);
             }
         },
         play() {

@@ -99,6 +99,7 @@ let draw = {
                 var intersectedObject = intersects[i].object;
                 if (intersectedObject !== plane && intersectedObject !== grid) {
                     drawSceneList[index].remove(intersectedObject);
+                    console.log("removed");
                 }
                 
             }
@@ -115,7 +116,7 @@ let draw = {
 
     },
     onStart: function (x, y, stroke) {
-        console.log(index);
+        //console.log(index);
         
         if (stroke.eraser){
             this.l.erase(x, y);

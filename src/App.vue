@@ -55,6 +55,7 @@ const geometry = new THREE.PlaneGeometry( 5, 5 );
 export let plane = new THREE.Mesh( geometry, material );
 
 export let drawSceneList = [new THREE.Scene()];
+//drawSceneList[0].add(plane);
 
 
 //import Vuetify from 'vuetify';
@@ -79,7 +80,7 @@ export default {
   mounted (){
     plane.rotateX(Math.PI/2);
     //planeL.rotateX(Math.PI/2);
-    scene.add( plane );
+    //scene.add( plane );
     
     //scene.add( planeL);
 
