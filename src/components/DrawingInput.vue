@@ -74,7 +74,7 @@
                 <v-spacer></v-spacer>
                 <v-btn class="fixed-button" @click="play" large>
                     <v-icon>
-                        mdi-play
+                        {{ rotatingCondition ? 'mdi-pause' : 'mdi-play' }}
                     </v-icon>
                 </v-btn>
             </v-row>
@@ -247,6 +247,7 @@ export default {
         play() {
             console.log(!this.rotatingCondition);
             this.rotatingCondition = !this.rotatingCondition;
+            this.isDrawing = this.rotatingCondition;
         }
         
     }
