@@ -25,7 +25,7 @@ export let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.i
 export let renderer = new THREE.WebGLRenderer();
 export let scene = new THREE.Scene();
 export let arcRenderer = new THREE.WebGLRenderer({alpha: true, antialias: true});
-export let drawRenderer = new THREE.WebGLRenderer({alpha: true});
+export let drawRenderer = new THREE.WebGLRenderer({alpha: true, antialias: true});
 const geometry = new THREE.PlaneGeometry( 5, 5 );
     const material = new THREE.MeshBasicMaterial( {
       color: 0x745DD9, 
