@@ -1,30 +1,84 @@
 <template>
     <div class="drawing-input">
-        <v-btn class="fixed-button" ref="eraserButton" @click="toggleEraserMode" large>
-            <v-icon>
-                {{ stroke.eraser ? 'mdi-eraser' : 'mdi-brush-outline' }}
-            </v-icon>
-        </v-btn>
+        <v-app>
+            <v-color-picker v-if="showColorPicker"></v-color-picker>
+
+            <v-app-bar class="small-bar justify-center" >
+                <div class="spacer"></div>
+                <v-btn icon class="fixed-button" @click="toggleColorSelect">
+                    <v-icon>mdi-home</v-icon>
+                </v-btn>
+                <div class="spacer"></div>
+                <v-btn icon class="fixed-button">
+                    <v-icon>mdi-file</v-icon>
+                </v-btn>
+                <v-spacer></v-spacer>
+                <v-btn icon class="fixed-button" ref="eraserButton" @click="toggleEraserMode">
+                    <v-icon>
+                    {{ stroke.eraser ? 'mdi-eraser' : 'mdi-brush-outline' }}
+                    </v-icon>
+                </v-btn>
+                
+            </v-app-bar>
+
         
-        <v-row class="bottom-buttons">
-            <v-btn @click="backward" large>
-                <v-icon>
-                    mdi-arrow-left
-                </v-icon>
-            </v-btn>
-            <v-spacer></v-spacer>
-            <v-btn @click="forward" large>
-                <v-icon>
-                    mdi-arrow-right
-                </v-icon>
-            </v-btn>
-            <v-spacer></v-spacer>
-            <v-btn @click="play" large>
-                <v-icon>
-                    mdi-arrow-right
-                </v-icon>
-            </v-btn>
-        </v-row>
+
+
+            <v-card class="pa-2" outlined>
+                <v-container class="align-center">
+                    <v-row justify="center">
+                        <v-col cols="12" sm="6" md="4">
+                            <v-slider class="my-slider" color="blue-grey-lighten-3" density="compact" track-size="15" direction="vertical"></v-slider>
+                        </v-col>
+                    </v-row>
+
+                    <v-row justify="center">
+                        <v-col cols="12" sm="6" md="4">
+                            <v-btn icon class="fixed-button" @click="showColorPicker = !showColorPicker">
+                                        <v-icon>mdi-palette</v-icon>
+                            </v-btn>
+                        </v-col>
+                    </v-row>
+
+                    <v-row justify="center">
+                        <v-col cols="12" sm="6" md="4">
+                            <v-btn icon class="fixed-button">
+                                        <v-icon>mdi-arrow-u-right-top</v-icon>
+                            </v-btn>
+                        </v-col>
+                    </v-row>
+
+                    <v-row justify="center">
+                        <v-col cols="12" sm="6" md="4">
+                            <v-btn icon class="fixed-button">
+                                        <v-icon>mdi-arrow-u-left-top</v-icon>
+                            </v-btn>
+                        </v-col>
+                    </v-row>
+                </v-container>
+            </v-card>
+            
+            
+            <v-row class="bottom-buttons">
+                <v-btn class="fixed-button" @click="backward" large>
+                    <v-icon>
+                        mdi-arrow-left
+                    </v-icon>
+                </v-btn>
+                <v-spacer></v-spacer>
+                <v-btn class="fixed-button" @click="forward" large>
+                    <v-icon>
+                        mdi-arrow-right
+                    </v-icon>
+                </v-btn>
+                <v-spacer></v-spacer>
+                <v-btn class="fixed-button" @click="play" large>
+                    <v-icon>
+                        mdi-play
+                    </v-icon>
+                </v-btn>
+            </v-row>
+    </v-app>
     </div>
     
 </template>
@@ -56,7 +110,9 @@ export default {
                 color: 0x000000,
                 eraser: false,
                 
-            }
+                
+            },
+            showColorPicker: false,
         };
     },
     mounted (){
@@ -165,6 +221,10 @@ export default {
         toggleEraserMode() {
             this.stroke.eraser = !this.stroke.eraser;
         },
+        toggleColorSelect(){
+            console.log(this.showColorPicker);
+            this.showColorPicker = !this.showColorPicker;
+        },
         backward() {
             if (index > 0){
                 index--;
@@ -200,20 +260,58 @@ export default {
 }
 
 .fixed-button {
+  z-index: 1000;
+  background-color: rgb(33, 33, 33);
+  color: rgb(176, 190, 197);
+}
+
+.v-card {
   position: fixed;
-  top: 20px; /* Adjust the bottom value as needed */
-  left: 20px; /* Adjust the right value as needed */
-  z-index: 999; /* Set an appropriate z-index if necessary */
-  /* Add any other desired styles */
+  top: 10%;
+  bottom: 90%;
+  left: 1%;
+  display: flex;
+  align-items: center;
+  z-index: 998;
+  height: 80%;
+  width: 5%;
+  justify-content: flex-start;
+  background-color: rgba(1, 1, 1, 0.7);
+}
+
+.button-container {
+  position: fixed;
+  top: 2%;
+  left: 2%;
+  height: 50%;
+  z-index: 999;
+  width: 10%;
+}
+
+.spacer {
+  width: 1%;
+  height: 1%;
+}
+
+.small-bar {
+  height: 8%;  /* Adjust this value as needed */
+  background-color: rgba(1, 1, 1, 0.7) !important;
 }
 
 .bottom-buttons {
   position: fixed;
-  width: 15%;
+  width: 20%;
   bottom: 40px; /* Adjust the bottom value as needed */
-  left: 40px; /* Adjust the right value as needed */
+  left: 2%; /* Adjust the right value as needed */
   z-index: 999; /* Set an appropriate z-index if necessary */
   /* Add any other desired styles */
+}
+
+.v-color-picker {
+    position: fixed;
+    top: 10%;
+    left: 10%;
+    z-index: 1001;
 }
 
 </style>

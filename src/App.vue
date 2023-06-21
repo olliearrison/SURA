@@ -1,24 +1,5 @@
 <template>
   <div>
-    <v-row class="d-flex justify-start align-center" style="height: 100vh;">
-      <v-col cols="12" sm="1" md="2" lg="2">
-        <v-card class="mx-auto" rounded color="blue">
-          <v-list>
-            <!-- Your components go here -->
-            <v-list-item>
-              <v-list-item-content>
-                <v-spacer></v-spacer>
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item>
-              <v-list-item-content>
-                <v-slider direction="vertical"></v-slider>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list>
-        </v-card>
-      </v-col>
-    </v-row>
     <UserInput/>
     <DrawingInput/>
     <GridBackground :camera-position="camera.position" :camera-angle="camera.angle"/>

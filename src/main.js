@@ -11,6 +11,17 @@ import '@mdi/font/css/materialdesignicons.css'
 const vuetify = createVuetify({
   components,
   directives,
+  theme: {
+    defaultTheme: 'light',
+    themes: {
+      light: {
+        'light-color': '#FFFFFF', // Set your custom color here
+      },
+      dark: {
+        'light-color': '#FFFFFF', // Set your custom color for dark mode
+      }
+    },
+  }
 })
 
 createApp(App).use(vuetify).mount('#app')
