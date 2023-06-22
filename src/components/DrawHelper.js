@@ -32,6 +32,8 @@ let draw = {
             });
             this.mesh = new THREE.Mesh(this.line.geometry, this.material);
             this.mesh.raycast = MeshLineRaycast;
+            this.eraserGroup = new THREE.Group();
+
         }
 
 
@@ -99,6 +101,7 @@ let draw = {
                 var intersectedObject = intersects[i].object;
                 if (intersectedObject !== plane && intersectedObject !== grid) {
                     drawSceneList[index].remove(intersectedObject);
+                    this.eraserGroup.add(intersectedObject);
                     console.log("removed");
                 }
                 
@@ -107,17 +110,29 @@ let draw = {
 
         }
 
-        end() {
+        end(eraser) {
             if (this.vertices.length >= 3) {
                 this.geometry.computeBoundingBox();
-              }
-        }
+            }
+            if (eraser){
+                if (this.eraserGroup.children.length === 0) {
+                    return [false, false];
+                }
 
+                return ['remove', this.eraserGroup];
+            } else {
+                if (this.geometry === undefined || this.vertices.length === 0) {
+                    return [false, false];
+                }
+                console.log(this.mesh.id);
+                console.log("ahhhhhhhhhhh*****");
+                return ['add', this.mesh.id];
+            }
+        }
 
     },
     onStart: function (x, y, stroke) {
-        //console.log(index);
-        
+
         if (stroke.eraser){
             this.l.erase(x, y);
         } else {
@@ -150,8 +165,8 @@ let draw = {
         }
         
     },
-    onEnd: function () {
-        this.l.end();
+    onEnd: function (stroke) {
+        return this.l.end(stroke.eraser);
     },
 }
 

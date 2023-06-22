@@ -18,6 +18,16 @@
                     {{ stroke.eraser ? 'mdi-eraser' : 'mdi-brush-outline' }}
                     </v-icon>
                 </v-btn>
+                <div class="spacer"></div>
+                <v-btn icon class="fixed-button">
+                    <v-icon>mdi-layers-outline</v-icon>
+                </v-btn>
+                <div class="spacer"></div>
+                <v-btn icon class="fixed-button" @click="toggleOnionSkin">
+                    <v-icon>
+                        {{ onionSkin ? 'mdi-animation' : 'mdi-animation-outline' }}
+                    </v-icon>
+                </v-btn>
                 
             </v-app-bar>
 
@@ -42,7 +52,7 @@
 
                     <v-row justify="center">
                         <v-col cols="12" sm="6" md="4">
-                            <v-btn icon class="fixed-button">
+                            <v-btn icon class="fixed-button custom-button" :style="{ color: canRedo ? '#B0BEC5' : '#78909C'}" @click="redo">
                                         <v-icon>mdi-arrow-u-right-top</v-icon>
                             </v-btn>
                         </v-col>
@@ -50,7 +60,7 @@
 
                     <v-row justify="center">
                         <v-col cols="12" sm="6" md="4">
-                            <v-btn icon class="fixed-button">
+                            <v-btn icon class="fixed-button custom-button" :style="{ color: canUndo ? '#B0BEC5' : '#78909C'}" @click="undo">
                                         <v-icon>mdi-arrow-u-left-top</v-icon>
                             </v-btn>
                         </v-col>
@@ -85,6 +95,7 @@
   
 <script>
 import { draw } from "./DrawHelper.js";
+import { HistoryController } from "./HistoryController.js";
 import { arcRenderer, drawSceneList } from '../App.vue';
 import * as THREE from 'three';
 //import * as THREE from "three";
@@ -94,6 +105,7 @@ export let index = 0;
 let drawing = false;
 
 let rotatingInterval = null;  // Interval to rotate index
+let historyController = new HistoryController();
 //let rotatingCondition = false;
 
 
@@ -113,6 +125,9 @@ export default {
                 
             },
             showColorPicker: false,
+            onionSkin: false,
+            canUndo: false,
+            canRedo: false,
         };
     },
     mounted (){
@@ -213,10 +228,18 @@ export default {
             let x = event.clientX;
             let y = event.clientY;
             draw.onStart(x, y, this.stroke);
+            this.canUndo = historyController.canUndo();
+            this.canRedo = historyController.canRedo();
         },
         handleMouseUp() {
             this.isDrawing = false;
-            draw.onEnd();
+            let result = draw.onEnd(this.stroke);
+            if (result[0] != false){
+                historyController.action(result);
+            }
+            this.canUndo = historyController.canUndo();
+            this.canRedo = historyController.canRedo();
+            //console.log(this.canUndo);
         },
         toggleEraserMode() {
             this.stroke.eraser = !this.stroke.eraser;
@@ -225,12 +248,15 @@ export default {
             console.log(this.showColorPicker);
             this.showColorPicker = !this.showColorPicker;
         },
+        toggleOnionSkin(){
+            this.onionSkin = !this.onionSkin;
+        },
         backward() {
             if (index > 0){
                 index--;
                 console.log(drawSceneList[index].children.length);
+                historyController = new HistoryController();
             }
-            
         },
         forward() {
             if (index < drawSceneList.length - 1){
@@ -238,8 +264,9 @@ export default {
                 console.log(drawSceneList[index].children.length);
             } else {
                 const newScene = new THREE.Scene();
-                //newScene.add(plane);
                 drawSceneList.push(newScene);
+                historyController = new HistoryController();
+
                 index++;
                 console.log(drawSceneList[index].children.length);
             }
@@ -248,7 +275,15 @@ export default {
             console.log(!this.rotatingCondition);
             this.rotatingCondition = !this.rotatingCondition;
             this.isDrawing = this.rotatingCondition;
-        }
+        },
+        undo(){
+            historyController.undo();
+            this.canRedo = historyController.canRedo();
+        },
+        redo(){
+            historyController.redo();
+            this.canUndo = historyController.canUndo();
+        },
         
     }
 }
@@ -313,6 +348,10 @@ export default {
     top: 10%;
     left: 10%;
     z-index: 1001;
+}
+
+.custom-button {
+  color: inherit;
 }
 
 </style>
