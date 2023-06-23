@@ -75,6 +75,14 @@
 
                     <v-row justify="center">
                         <v-col cols="12" sm="6" md="4">
+                            <v-btn icon class="fixed-button" @click="showColorPicker = !showColorPicker">
+                                        <v-icon>mdi-cylinder</v-icon>
+                            </v-btn>
+                        </v-col>
+                    </v-row>
+
+                    <v-row justify="center">
+                        <v-col cols="12" sm="6" md="4">
                             <v-btn icon class="fixed-button custom-button" :style="{ color: canRedo ? '#B0BEC5' : '#78909C'}" @click="redo">
                                         <v-icon>mdi-arrow-u-right-top</v-icon>
                             </v-btn>
@@ -212,10 +220,8 @@ export default {
         });
 
         document.body.addEventListener('pointermove', (event) => {
-            //console.log(event.pressure);
             if (event.pressure > 0){
                 this.stroke.lineWidth = event.pressure * .5 * this.sizeMultiplier;
-                console.log("event pressure: " + event.pressure);
             }
 
         });
@@ -295,25 +301,20 @@ export default {
         backward() {
             if (index > 0){
                 index--;
-                console.log(drawSceneList[index].children.length);
                 historyController = new HistoryController();
             }
         },
         forward() {
             if (index < drawSceneList.length - 1){
                 index++;
-                console.log(drawSceneList[index].children.length);
             } else {
                 const newScene = new THREE.Scene();
                 drawSceneList.push(newScene);
                 historyController = new HistoryController();
-
                 index++;
-                console.log(drawSceneList[index].children.length);
             }
         },
         play() {
-            console.log(!this.rotatingCondition);
             this.rotatingCondition = !this.rotatingCondition;
             this.isDrawing = this.rotatingCondition;
         },
@@ -326,11 +327,10 @@ export default {
             this.canUndo = historyController.canUndo();
         },
         updateSizeMultiplier() {
-            console.log("updating size multiplier");
+            // .5 is the constant multiplier
+            // this is multiplied by .5, the default pressure
             this.stroke.lineWidth = .25 * this.sizeMultiplier;
-            console.log(this.sizeMultiplier, this.stroke.lineWidth);
         },
-        
     }
 }
 </script>
