@@ -38,7 +38,20 @@
                 <v-container class="align-center">
                     <v-row justify="center">
                         <v-col cols="12" sm="6" md="4">
-                            <v-slider class="my-slider" color="blue-grey-lighten-3" density="compact" track-size="15" direction="vertical"></v-slider>
+                            <v-slider
+                                show-ticks
+                                class="my-slider"
+                                color="blue-grey-lighten-3"
+                                density="compact"
+                                track-size="15"
+                                direction="vertical"
+                                v-model="sizeMultiplier"
+                                :step="0.1"
+                                :min="0.4"
+                                :max="1.5"
+                                @click="updateSizeMultiplier"
+                                >
+                            </v-slider>
                         </v-col>
                     </v-row>
 
@@ -128,6 +141,7 @@ export default {
             onionSkin: false,
             canUndo: false,
             canRedo: false,
+            sizeMultiplier: 1,
         };
     },
     mounted (){
@@ -177,7 +191,9 @@ export default {
         document.body.addEventListener('pointermove', (event) => {
             //console.log(event.pressure);
             if (event.pressure > 0){
-                this.stroke.lineWidth = event.pressure * .5;
+                this.stroke.lineWidth = event.pressure * .5 * this.sizeMultiplier;
+            } else {
+                this.stroke.lineWidth = .5 * this.sizeMultiplier;
             }
 
         });
@@ -283,6 +299,11 @@ export default {
         redo(){
             historyController.redo();
             this.canUndo = historyController.canUndo();
+        },
+        updateSizeMultiplier() {
+            console.log("updating size multiplier");
+            this.stroke.lineWidth = .5 * this.sizeMultiplier;
+            console.log(this.sizeMultiplier, this.stroke.lineWidth);
         },
         
     }
