@@ -215,8 +215,7 @@ export default {
             //console.log(event.pressure);
             if (event.pressure > 0){
                 this.stroke.lineWidth = event.pressure * .5 * this.sizeMultiplier;
-            } else {
-                this.stroke.lineWidth = .5 * this.sizeMultiplier;
+                console.log("event pressure: " + event.pressure);
             }
 
         });
@@ -328,7 +327,7 @@ export default {
         },
         updateSizeMultiplier() {
             console.log("updating size multiplier");
-            this.stroke.lineWidth = .5 * this.sizeMultiplier;
+            this.stroke.lineWidth = .25 * this.sizeMultiplier;
             console.log(this.sizeMultiplier, this.stroke.lineWidth);
         },
         
