@@ -13,6 +13,16 @@
                     <v-icon>mdi-file</v-icon>
                 </v-btn>
                 <v-spacer></v-spacer>
+                <v-btn icon class="fixed-button" @click="toggleNewMode">
+                    <v-icon>
+                        {{ newMode ? 'mdi-toggle-switch-outline' : 'mdi-toggle-switch-off-outline' }}
+                    </v-icon>
+                </v-btn>
+                <div class="spacer"></div>
+                <v-btn icon class="fixed-button">
+                    <v-icon>mdi-target</v-icon>
+                </v-btn>
+                <div class="spacer"></div>
                 <v-btn icon class="fixed-button" ref="eraserButton" @click="toggleEraserMode">
                     <v-icon>
                     {{ stroke.eraser ? 'mdi-eraser' : 'mdi-brush-outline' }}
@@ -142,6 +152,7 @@ export default {
             canUndo: false,
             canRedo: false,
             sizeMultiplier: .5,
+            newMode: false,
         };
     },
     computed: {
@@ -278,6 +289,9 @@ export default {
         },
         toggleOnionSkin(){
             this.onionSkin = !this.onionSkin;
+        },
+        toggleNewMode(){
+            this.newMode = !this.newMode;
         },
         backward() {
             if (index > 0){
