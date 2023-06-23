@@ -1,7 +1,7 @@
 <template>
     <div class="drawing-input">
         <v-app>
-            <v-color-picker v-if="showColorPicker"></v-color-picker>
+            <v-color-picker v-if="showColorPicker" v-model="color"></v-color-picker>
 
             <v-app-bar class="small-bar justify-center" >
                 <div class="spacer"></div>
@@ -143,6 +143,18 @@ export default {
             canRedo: false,
             sizeMultiplier: 1,
         };
+    },
+    computed: {
+        color: {
+        get() {
+            // Convert color from 0xRRGGBB to #RRGGBB when getting
+            return '#' + this.stroke.color.toString(16).padStart(6, '0');
+        },
+        set(value) {
+            // Convert color from #RRGGBB to 0xRRGGBB when setting
+            this.stroke.color = parseInt(value.slice(1), 16);
+        },
+        },
     },
     mounted (){
         this.$watch(() => this.rotatingCondition, (newValue) => {
