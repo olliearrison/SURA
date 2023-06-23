@@ -60,6 +60,7 @@ export default {
   },
   mounted (){
     plane.rotateX(Math.PI/2);
+
   },
   methods: {
     updateCamera({ position, angle }) {

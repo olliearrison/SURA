@@ -141,7 +141,7 @@ export default {
             onionSkin: false,
             canUndo: false,
             canRedo: false,
-            sizeMultiplier: 1,
+            sizeMultiplier: .5,
         };
     },
     computed: {
