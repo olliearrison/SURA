@@ -13,6 +13,7 @@ import { renderer, camera, scene, plane, drawSceneList, drawRenderer } from '../
 import { index } from './DrawingInput.vue';
 
 export let grid = InfiniteGridHelper();
+export let background = new THREE.Object3D();
 
 export default {
   name: 'GridBackground',
@@ -55,7 +56,7 @@ export default {
 
     scene.add(grid);
 
-    let background = new THREE.Object3D();
+    
 
     const loader = new GLTFLoader();
 

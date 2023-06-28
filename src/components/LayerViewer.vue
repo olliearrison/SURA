@@ -2,7 +2,7 @@
     <div class="layer-viewer">
       <v-sheet class="mx-auto" elevation="0" max-width="800">
         <v-slide-group v-model="model" class="pa-4" show-arrows>
-          <v-slide-group-item v-for="n in 4" :key="n">
+          <v-slide-group-item v-for="n in 5" :key="n">
             <div class="card-wrapper" ref="cardElements">
               <v-card width="100" height="100" color="white" class="transparent-card ma-4">
                 <div class="card-content">
@@ -19,12 +19,14 @@
   <script>
   import { WebGLRenderer } from 'three';
   import { camera, drawSceneList, plane } from '../App.vue';
+  //import { background } from '../components/GridBackground.vue';
   
   export default {
     data() {
       return {
         model: null,
         renderers: [],
+        layerLength: 1,
       };
     },
     mounted() {
@@ -37,6 +39,7 @@
   
         cardElements.forEach((cardElement) => {
           const renderer = new WebGLRenderer({ antialias: true });
+          renderer.setClearColor(0xffffff, 0);
           const width = cardElement.offsetWidth;
           const height = cardElement.offsetHeight;
           renderer.setSize(width, height);

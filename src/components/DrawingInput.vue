@@ -305,6 +305,8 @@ export default {
             }
         },
         forward() {
+            console.log(index);
+            console.log("forward");
             if (index < drawSceneList.length - 1){
                 index++;
             } else {
@@ -342,7 +344,7 @@ export default {
 }
 
 .fixed-button {
-  z-index: 1000;
+  z-index: 1200;
   background-color: rgb(33, 33, 33);
   color: rgb(176, 190, 197);
 }
