@@ -1,6 +1,5 @@
 <template>
   <div>
-    <LayerViewer/>
     <UserInput/>
     <DrawingInput/>
     <GridBackground :camera-position="camera.position" :camera-angle="camera.angle"/>
@@ -16,7 +15,7 @@
 
 
 <script>
-import LayerViewer from './components/LayerViewer.vue';
+//import LayerViewer from './components/LayerViewer.vue';
 import UserInput from './components/UserInput.vue';
 import DrawingInput from './components/DrawingInput.vue';
 import GridBackground from './components/GridBackground.vue';
@@ -47,7 +46,6 @@ import 'vuetify/dist/vuetify.min.css';
 export default {
   name: 'App',
   components: {
-    LayerViewer,
     UserInput,
     DrawingInput,
     Arcball,

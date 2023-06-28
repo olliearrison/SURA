@@ -1,5 +1,6 @@
 <template>
     <div class="drawing-input">
+        <LayerViewer/>
         <v-app>
             <v-color-picker v-if="showColorPicker" v-model="color"></v-color-picker>
 
@@ -125,6 +126,7 @@
 </template>
   
 <script>
+import LayerViewer from "./LayerViewer.vue";
 import { draw } from "./DrawHelper.js";
 import { HistoryController } from "./HistoryController.js";
 import { arcRenderer, drawSceneList } from '../App.vue';
@@ -142,6 +144,9 @@ let historyController = new HistoryController();
 
 export default {
     name: 'DrawingInput',
+    components: {
+        LayerViewer,
+    },
 
     data(){
         return {
