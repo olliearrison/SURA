@@ -1,6 +1,6 @@
 <template>
-    <div class="drawing-input">
-        <LayerViewer/>
+    <div class="drawing-input" >
+        <LayerViewer ref="layerViewer"/>
         <v-app>
             <v-color-picker v-if="showColorPicker" v-model="color"></v-color-picker>
 
@@ -131,8 +131,6 @@ import { draw } from "./DrawHelper.js";
 import { HistoryController } from "./HistoryController.js";
 import { arcRenderer, drawSceneList } from '../App.vue';
 import * as THREE from 'three';
-//import * as THREE from "three";
-//import { renderer, scene, camera } from "../App.vue";
 
 export let index = 0;
 let drawing = false;
@@ -320,6 +318,10 @@ export default {
                 historyController = new HistoryController();
                 index++;
             }
+            const layerViewer = this.$refs.layerViewer;
+      
+            // Call the function in the child component
+            layerViewer.updateLayers();
         },
         play() {
             this.rotatingCondition = !this.rotatingCondition;

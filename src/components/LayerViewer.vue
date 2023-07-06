@@ -2,9 +2,17 @@
     <div class="layer-viewer">
       <v-sheet class="mx-auto" elevation="0" max-width="800">
         <v-slide-group v-model="model" class="pa-4" show-arrows>
-          <v-slide-group-item v-for="n in 5" :key="n">
+          <v-slide-group-item v-for="(n, index) in layerLength" :key="n">
             <div class="card-wrapper" ref="cardElements">
-              <v-card width="100" height="100" color="white" class="transparent-card ma-4">
+              <v-card
+                width="70"
+                height="70"
+                :class="['transparent-card', { 'selected-card': index === model }]"
+                color="blue-grey-lighten-3"
+                class="ma-4"
+                :variant="index === model ? 'outlined' : undefined"
+                @click="selectCard(index)"
+              >
                 <div class="card-content">
                   <div class="d-flex fill-height align-center justify-center"></div>
                 </div>
@@ -19,25 +27,32 @@
   <script>
   import { WebGLRenderer } from 'three';
   import { camera, drawSceneList, plane } from '../App.vue';
-  //import { background } from '../components/GridBackground.vue';
   
   export default {
     data() {
       return {
-        model: null,
+        model: 0,
         renderers: [],
         layerLength: 1,
       };
     },
     mounted() {
-      this.initializeScene();
+      this.$nextTick(() => {
+        this.initializeScene();
+      });
     },
     methods: {
       initializeScene() {
+        this.updateScene();
+        this.animate(); // Start the animation loop
+      },
+      updateScene() {
         const cardElements = this.$refs.cardElements;
-        this.renderers = [];
+
+        console.log('cardElements:', cardElements.length);
   
         cardElements.forEach((cardElement) => {
+        console.log('cardElement:', cardElement)
           const renderer = new WebGLRenderer({ antialias: true });
           renderer.setClearColor(0xffffff, 0);
           const width = cardElement.offsetWidth;
@@ -45,32 +60,74 @@
           renderer.setSize(width, height);
   
           const cardContentElement = cardElement.querySelector('.card-content');
+
           cardContentElement.appendChild(renderer.domElement);
   
-          this.renderers.push(renderer);
+          this.renderers.push({ cardElement, renderer });
         });
-  
-        this.animate();
+        console.log(this.renderers);
+      },
+      updateLayers() {
+        this.reset();
+
+        this.layerLength = drawSceneList.length;
+        this.$nextTick(() => {
+            this.updateScene();
+        });
       },
       animate() {
-        requestAnimationFrame(this.animate);
+        const animateFrame = () => {
+          requestAnimationFrame(animateFrame);
+        
   
-        const cardElements = this.$refs.cardElements;
-        cardElements.forEach((cardElement, index) => {
-          const renderer = this.renderers[index];
-          const scene = drawSceneList[0].remove(plane);
-          const cardCamera = camera;
+          this.renderers.forEach(({ cardElement, renderer }) => {
+            if (!cardElement || !renderer) {
+                console.log("DANGER");
+                return;
+            }
+
+
+            const scene = drawSceneList[0].remove(plane);
+            const cardCamera = camera;
   
-          const width = cardElement.offsetWidth;
-          const height = cardElement.offsetHeight;
-          renderer.setSize(width, height);
+            const width = cardElement.offsetWidth;
+            const height = cardElement.offsetHeight;
+            renderer.setSize(width, height);
   
-          renderer.render(scene, cardCamera);
-        });
+            renderer.render(scene, cardCamera);
+          });
+        };
+  
+        animateFrame();
       },
+      selectCard(index) {
+        this.model = index;
+        console.log('Selected Card Index:', index);
+      },
+      reset() {
+        // Dispose old renderers and remove the canvas from the DOM
+        this.renderers.forEach(({ cardElement, renderer }) => {
+            const cardContentElement = cardElement.querySelector('.card-content');
+            const oldCanvas = cardContentElement.querySelector('canvas');
+
+            // If there's a canvas already, remove it
+            if(oldCanvas) {
+            cardContentElement.removeChild(oldCanvas);
+            console.log("Removed old canvas");
+            }
+
+            // Dispose of the renderer
+            renderer.dispose();
+            renderer = null;
+        });
+
+        // Clear the renderers array
+        this.renderers = [];
+        },
     },
   };
   </script>
+  
   
   
   <style scoped>
@@ -99,7 +156,6 @@
   
   .transparent-card {
     background-color: transparent;
-    border: none;
   }
 
   .v-sheet {
@@ -121,6 +177,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
   }
+
+  .card-content canvas {
+    z-index: 2000;
+    }
+  
   </style>
   
