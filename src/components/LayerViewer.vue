@@ -14,6 +14,7 @@
                 @click="selectCard(index)"
               >
                 <div class="card-content">
+                  <span class="card-text" >{{ n }}</span>
                   <div class="d-flex fill-height align-center justify-center"></div>
                 </div>
               </v-card>
@@ -25,8 +26,7 @@
   </template>
   
   <script>
-  import { WebGLRenderer } from 'three';
-  import { camera, drawSceneList, plane } from '../App.vue';
+  import { drawSceneList } from "../App.vue";
   
   export default {
     data() {
@@ -36,94 +36,15 @@
         layerLength: 1,
       };
     },
-    mounted() {
-      this.$nextTick(() => {
-        this.initializeScene();
-      });
-    },
     methods: {
-      initializeScene() {
-        this.updateScene();
-        this.animate(); // Start the animation loop
-      },
-      updateScene() {
-        const cardElements = this.$refs.cardElements;
-
-        console.log('cardElements:', cardElements.length);
-  
-        cardElements.forEach((cardElement) => {
-        console.log('cardElement:', cardElement)
-          const renderer = new WebGLRenderer({ antialias: true });
-          renderer.setClearColor(0xffffff, 0);
-          const width = cardElement.offsetWidth;
-          const height = cardElement.offsetHeight;
-          renderer.setSize(width, height);
-  
-          const cardContentElement = cardElement.querySelector('.card-content');
-
-          cardContentElement.appendChild(renderer.domElement);
-  
-          this.renderers.push({ cardElement, renderer });
-        });
-        console.log(this.renderers);
-      },
       updateLayers() {
-        this.reset();
-
+        console.log("update");
         this.layerLength = drawSceneList.length;
-        this.$nextTick(() => {
-            this.updateScene();
-        });
       },
-      animate() {
-        const animateFrame = () => {
-          requestAnimationFrame(animateFrame);
-        
-  
-          this.renderers.forEach(({ cardElement, renderer }) => {
-            if (!cardElement || !renderer) {
-                console.log("DANGER");
-                return;
-            }
-
-
-            const scene = drawSceneList[0].remove(plane);
-            const cardCamera = camera;
-  
-            const width = cardElement.offsetWidth;
-            const height = cardElement.offsetHeight;
-            renderer.setSize(width, height);
-  
-            renderer.render(scene, cardCamera);
-          });
-        };
-  
-        animateFrame();
+      selectCard(selectedIndex) {
+        this.model = selectedIndex;
+        this.$emit('card-selected', selectedIndex);
       },
-      selectCard(index) {
-        this.model = index;
-        console.log('Selected Card Index:', index);
-      },
-      reset() {
-        // Dispose old renderers and remove the canvas from the DOM
-        this.renderers.forEach(({ cardElement, renderer }) => {
-            const cardContentElement = cardElement.querySelector('.card-content');
-            const oldCanvas = cardContentElement.querySelector('canvas');
-
-            // If there's a canvas already, remove it
-            if(oldCanvas) {
-            cardContentElement.removeChild(oldCanvas);
-            console.log("Removed old canvas");
-            }
-
-            // Dispose of the renderer
-            renderer.dispose();
-            renderer = null;
-        });
-
-        // Clear the renderers array
-        this.renderers = [];
-        },
     },
   };
   </script>
@@ -181,8 +102,16 @@
   }
 
   .card-content canvas {
-    z-index: 2000;
+    z-index: 1000;
     }
   
+.card-text {
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+  z-index: 2100;
+  color: rgb(176, 190, 197);
+}
+
   </style>
   

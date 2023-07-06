@@ -1,6 +1,6 @@
 <template>
     <div class="drawing-input" >
-        <LayerViewer ref="layerViewer"/>
+        <LayerViewer @card-selected="handleCardSelected" ref="layerViewer"/>
         <v-app>
             <v-color-picker v-if="showColorPicker" v-model="color"></v-color-picker>
 
@@ -339,6 +339,11 @@ export default {
             // .5 is the constant multiplier
             // this is multiplied by .5, the default pressure
             this.stroke.lineWidth = .25 * this.sizeMultiplier;
+        },
+        handleCardSelected(selectedIndex) {
+        // Use the selected index as needed
+            console.log('Selected index:', selectedIndex);
+            index = selectedIndex;
         },
     }
 }
