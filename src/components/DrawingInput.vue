@@ -76,8 +76,8 @@
 
                     <v-row justify="center">
                         <v-col cols="12" sm="6" md="4">
-                            <v-btn icon class="fixed-button" @click="showColorPicker = !showColorPicker">
-                                        <v-icon>mdi-cylinder</v-icon>
+                            <v-btn icon class="fixed-button" @click="nextIcon">
+                                <v-icon>{{ icons[currentIconIndex] }}</v-icon>
                             </v-btn>
                         </v-col>
                     </v-row>
@@ -137,8 +137,6 @@ let drawing = false;
 
 let rotatingInterval = null;  // Interval to rotate index
 let historyController = new HistoryController();
-//let rotatingCondition = false;
-
 
 export default {
     name: 'DrawingInput',
@@ -148,6 +146,8 @@ export default {
 
     data(){
         return {
+            icons: ['mdi-cylinder', 'mdi-square-outline', 'mdi-sphere'],
+            currentIconIndex: 1,
             isDrawing: false,
             rotatingCondition: false,
             stroke: {
@@ -344,6 +344,9 @@ export default {
         // Use the selected index as needed
             console.log('Selected index:', selectedIndex);
             index = selectedIndex;
+        },
+        nextIcon() {
+            this.currentIconIndex = (this.currentIconIndex + 1) % this.icons.length;
         },
     }
 }

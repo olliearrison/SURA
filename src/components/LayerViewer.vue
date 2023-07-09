@@ -8,7 +8,7 @@
                 width="70"
                 height="70"
                 :class="['transparent-card', { 'selected-card': index === model }]"
-                color="blue-grey-lighten-3"
+                color=rgba(211,211,211,0.2)
                 class="ma-4"
                 :variant="index === model ? 'outlined' : undefined"
                 @click="selectCard(index)"
