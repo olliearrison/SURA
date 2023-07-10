@@ -104,13 +104,13 @@
             <v-row class="bottom-buttons">
                 <v-btn class="fixed-button" @click="backward" large>
                     <v-icon>
-                        mdi-arrow-left
+                        mdi-minus
                     </v-icon>
                 </v-btn>
                 <v-spacer></v-spacer>
                 <v-btn class="fixed-button" @click="forward" large>
                     <v-icon>
-                        mdi-arrow-right
+                        mdi-plus
                     </v-icon>
                 </v-btn>
                 <v-spacer></v-spacer>
@@ -302,22 +302,26 @@ export default {
             this.newMode = !this.newMode;
         },
         backward() {
-            if (index > 0){
-                index--;
-                historyController = new HistoryController();
+            const len = drawSceneList.length;
+            console.log(len);
+
+            historyController = new HistoryController();
+            if (index > -1) {
+                drawSceneList.splice(index, 1);
             }
+            index --;
+            //drawSceneList.remove(index);
+            const layerViewer = this.$refs.layerViewer;
+            layerViewer.updateLayers();
         },
         forward() {
             console.log(index);
             console.log("forward");
-            if (index < drawSceneList.length - 1){
-                index++;
-            } else {
-                const newScene = new THREE.Scene();
-                drawSceneList.push(newScene);
-                historyController = new HistoryController();
-                index++;
-            }
+            const newScene = new THREE.Scene();
+            drawSceneList.push(newScene);
+            historyController = new HistoryController();
+            index++;
+            
             const layerViewer = this.$refs.layerViewer;
       
             // Call the function in the child component
@@ -349,7 +353,7 @@ export default {
             this.currentIconIndex = (this.currentIconIndex + 1) % this.icons.length;
         },
         loadPosition(){
-            
+
         },
     }
 }

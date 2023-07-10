@@ -7,7 +7,7 @@
               <v-card
                 width="60"
                 height="60"
-                :class="['transparent-card', { 'selected-card': index === model }]"
+                :class="['selected-card', { 'transparent-card': index === model }]"
                 color=rgba(211,211,211,0.2)
                 class="ma-4"
                 :variant="index === model ? 'outlined' : undefined"
@@ -27,6 +27,7 @@
   
   <script>
   import { drawSceneList } from "../App.vue";
+  import { index } from "../components/DrawingInput.vue";
   
   export default {
     data() {
@@ -40,6 +41,7 @@
       updateLayers() {
         console.log("update");
         this.layerLength = drawSceneList.length;
+        this.model = index;
       },
       selectCard(selectedIndex) {
         this.model = selectedIndex;
