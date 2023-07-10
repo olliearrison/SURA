@@ -20,7 +20,7 @@
                     </v-icon>
                 </v-btn>
                 <div class="spacer"></div>
-                <v-btn icon class="fixed-button">
+                <v-btn icon class="fixed-button" @click="loadPosition">
                     <v-icon>mdi-target</v-icon>
                 </v-btn>
                 <div class="spacer"></div>
@@ -347,6 +347,9 @@ export default {
         },
         nextIcon() {
             this.currentIconIndex = (this.currentIconIndex + 1) % this.icons.length;
+        },
+        loadPosition(){
+            
         },
     }
 }

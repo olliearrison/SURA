@@ -27,7 +27,7 @@ export let renderer = new THREE.WebGLRenderer();
 export let scene = new THREE.Scene();
 export let arcRenderer = new THREE.WebGLRenderer({alpha: true, antialias: true});
 export let drawRenderer = new THREE.WebGLRenderer({alpha: true, antialias: true});
-const geometry = new THREE.PlaneGeometry( 5, 5 );
+const geometry = new THREE.PlaneGeometry( 4, 4 );
     const material = new THREE.MeshBasicMaterial( {
       color: 0x745DD9, 
       side: THREE.DoubleSide,

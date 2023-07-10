@@ -1,12 +1,12 @@
 <template>
     <div class="layer-viewer">
-      <v-sheet class="mx-auto" elevation="0" max-width="800">
+      <v-sheet class="mx-auto" elevation="0" max-width="800" max-height="100">
         <v-slide-group v-model="model" class="pa-4" show-arrows>
           <v-slide-group-item v-for="(n, index) in layerLength" :key="n">
             <div class="card-wrapper" ref="cardElements">
               <v-card
-                width="70"
-                height="70"
+                width="60"
+                height="60"
                 :class="['transparent-card', { 'selected-card': index === model }]"
                 color=rgba(211,211,211,0.2)
                 class="ma-4"
@@ -61,7 +61,7 @@
     position: fixed;
     bottom: 0;
     width: 100%;
-    height: 6%;
+    height: 4%;
     z-index: 1100;
     align-items: center;
     justify-content: center;
@@ -86,6 +86,9 @@
     color: rgb(176, 190, 197);
     border-radius: 5px;
     width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   
   .card-wrapper {
@@ -103,7 +106,7 @@
 
   .card-content canvas {
     z-index: 1000;
-    }
+  }
   
 .card-text {
   text-align: center;
