@@ -27,14 +27,27 @@ export let renderer = new THREE.WebGLRenderer();
 export let scene = new THREE.Scene();
 export let arcRenderer = new THREE.WebGLRenderer({alpha: true, antialias: true});
 export let drawRenderer = new THREE.WebGLRenderer({alpha: true, antialias: true});
-const geometry = new THREE.PlaneGeometry( 4, 4 );
-    const material = new THREE.MeshBasicMaterial( {
+
+
+const planeGeometry = new THREE.PlaneGeometry( 4, 4 );
+    const planeMaterial = new THREE.MeshBasicMaterial( {
       color: 0x745DD9, 
       side: THREE.DoubleSide,
       opacity: 0.25,
       transparent: true,
     } );
-export let plane = new THREE.Mesh( geometry, material );
+const plane = new THREE.Mesh( planeGeometry, planeMaterial );
+
+const sphereGeometry = new THREE.SphereGeometry( 2, 32, 16 ); 
+//const sphereMaterial = new THREE.MeshBasicMaterial( { color: 0xffff00 } ); 
+const sphere = new THREE.Mesh( sphereGeometry, planeMaterial );
+
+const cylinderGeometry = new THREE.CylinderGeometry( 1, 1, 2, 32 ); 
+//onst material = new THREE.MeshBasicMaterial( {color: 0xffff00} ); 
+const cylinder = new THREE.Mesh( cylinderGeometry, planeMaterial );
+
+//export let canvasIndex = 0;
+export let canvas = [plane, sphere, cylinder];
 
 export let drawSceneList = [new THREE.Scene()];
 //drawSceneList[0].add(plane);

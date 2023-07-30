@@ -133,6 +133,8 @@ import { arcRenderer, drawSceneList } from '../App.vue';
 import * as THREE from 'three';
 
 export let index = 0;
+export let canvasIndex = 0;
+
 let drawing = false;
 
 let rotatingInterval = null;  // Interval to rotate index
@@ -146,8 +148,8 @@ export default {
 
     data(){
         return {
-            icons: ['mdi-cylinder', 'mdi-square-outline', 'mdi-sphere'],
-            currentIconIndex: 1,
+            icons: ['mdi-square-outline', 'mdi-sphere', 'mdi-cylinder'],
+            currentIconIndex: 0,
             isDrawing: false,
             rotatingCondition: false,
             stroke: {
@@ -316,7 +318,7 @@ export default {
         },
         forward() {
             console.log(index);
-            console.log("forward");
+            console.log("forwardddd");
             const newScene = new THREE.Scene();
             drawSceneList.push(newScene);
             historyController = new HistoryController();
@@ -350,7 +352,11 @@ export default {
             index = selectedIndex;
         },
         nextIcon() {
+            
             this.currentIconIndex = (this.currentIconIndex + 1) % this.icons.length;
+            console.log("index changed", this.currentIconIndex);
+            canvasIndex = this.currentIconIndex;
+
         },
         loadPosition(){
 

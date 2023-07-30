@@ -1,8 +1,8 @@
 import * as THREE from "three";
 import { MeshLine, MeshLineMaterial, MeshLineRaycast } from "three.meshline";
-import { drawSceneList, camera, plane } from "../App.vue";
+import { drawSceneList, camera, canvas } from "../App.vue";
 import { grid } from "./GridBackground.vue";
-import { index } from './DrawingInput.vue';
+import { index, canvasIndex } from './DrawingInput.vue';
 
 let draw = {
     l: undefined,
@@ -45,11 +45,11 @@ let draw = {
             vec.set(
                 ( x / window.innerWidth ) * 2 - 1,
                 - ( y / window.innerHeight ) * 2 + 1,
-                .5 );
+                4 );
 
             const raycaster = new THREE.Raycaster();
             raycaster.setFromCamera( vec, camera );
-            var intersects = raycaster.intersectObject( plane );
+            var intersects = raycaster.intersectObject( canvas[canvasIndex] );
             
             const intersectPoints = intersects.map((intersection) => intersection.point);
             return intersectPoints;
@@ -99,7 +99,7 @@ let draw = {
             //const intersectPoints = intersects.map((intersection) => intersection.point);
             for (var i = 0; i < intersects.length; i++) {
                 var intersectedObject = intersects[i].object;
-                if (intersectedObject !== plane && intersectedObject !== grid) {
+                if (intersectedObject !== canvas[canvasIndex] && intersectedObject !== grid) {
                     drawSceneList[index].remove(intersectedObject);
                     this.eraserGroup.add(intersectedObject);
                     console.log("removed");

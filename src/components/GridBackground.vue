@@ -9,8 +9,8 @@
 import * as THREE from 'three';
 import InfiniteGridHelper from "./InfiniteGridHelper.js";
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { renderer, camera, scene, plane, drawSceneList, drawRenderer } from '../App.vue';
-import { index } from './DrawingInput.vue';
+import { renderer, camera, scene, canvas, drawSceneList, drawRenderer } from '../App.vue';
+import { index, canvasIndex } from './DrawingInput.vue';
 
 export let grid = InfiniteGridHelper();
 export let background = new THREE.Object3D();
@@ -80,14 +80,16 @@ export default {
 
         camera.position.copy(self.cameraPosition);
         camera.rotation.set(self.cameraAngle.x, self.cameraAngle.y, self.cameraAngle.z);
-        plane.rotation.set(self.cameraAngle.x, self.cameraAngle.y, self.cameraAngle.z);
+        canvas[canvasIndex].rotation.set(self.cameraAngle.x, self.cameraAngle.y, self.cameraAngle.z);
 
         const frontVector = new THREE.Vector3(0, 0, 4); // Direction in front of the camera
-        const planePosition = camera.position.clone().add(camera.getWorldDirection(new THREE.Vector3()).multiplyScalar(frontVector.z));
-        plane.position.copy(planePosition);
+        const canvasPosition = camera.position.clone().add(camera.getWorldDirection(new THREE.Vector3()).multiplyScalar(frontVector.z));
+        canvas[canvasIndex].position.copy(canvasPosition);
 
         renderer.render(scene, camera);
-        drawRenderer.render(drawSceneList[index].add(plane).add(background), camera);
+        drawRenderer.render(drawSceneList[index].add(canvas[canvasIndex]).add(background), camera);
+        drawSceneList[index].remove(canvas[canvasIndex]);
+        
         requestAnimationFrame(animate);
         
         
