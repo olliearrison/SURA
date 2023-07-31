@@ -78,10 +78,10 @@ class FrameController {
 
     delFrameAtIndex(i){
         this.check(i);
-        if (this.frameList.length > 1){
+        if (this.index > 0 && i > 0){
             this.frameList.splice(i, 1);
+            this.index --;
         }
-        this.index --;
     }
 
     check(i){

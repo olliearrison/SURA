@@ -8,7 +8,6 @@
                 width="60"
                 height="60"
                 :class="['selected-card', { 'transparent-card': index === model }]"
-                color=rgba(211,211,211,0.2)
                 class="ma-4"
                 :variant="index === model ? 'outlined' : undefined"
                 @click="selectCard(index)"
@@ -75,6 +74,10 @@
     background-color: transparent;
     box-shadow: none;
     color: rgb(176, 190, 197);
+  }
+
+  .selected-card {
+  background-color: rgba(211, 211, 211, 0.2); /* Default color */
   }
   
   .transparent-card {

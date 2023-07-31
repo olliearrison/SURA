@@ -187,7 +187,9 @@ export default {
                     console.log("hello");
                     // Rotate the index 5 times per second
                     rotatingInterval = setInterval(() => {
-                        frames.index = (frames.index + 1) % frames.length;
+                        frames.setIndex((frames.index + 1) % frames.frameList.length);
+                        const layerViewer = this.$refs.layerViewer;
+                        layerViewer.updateLayers();
                     }, 1000/5); // 1000 ms (1s) divided by 5 gives 200 ms
                 }
             }else{
