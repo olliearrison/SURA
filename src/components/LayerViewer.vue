@@ -26,8 +26,8 @@
   </template>
   
   <script>
-  import { drawSceneList } from "../App.vue";
-  import { index } from "../components/DrawingInput.vue";
+  import { frames } from "../App.vue";
+  //import { index } from "../components/DrawingInput.vue";
   
   export default {
     data() {
@@ -40,8 +40,8 @@
     methods: {
       updateLayers() {
         console.log("update");
-        this.layerLength = drawSceneList.length;
-        this.model = index;
+        this.layerLength = frames.frameList.length;
+        this.model = frames.index;
       },
       selectCard(selectedIndex) {
         this.model = selectedIndex;

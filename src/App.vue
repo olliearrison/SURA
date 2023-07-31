@@ -21,6 +21,8 @@ import DrawingInput from './components/DrawingInput.vue';
 import GridBackground from './components/GridBackground.vue';
 import Arcball from './components/ArcballControl.vue';
 import * as THREE from 'three';
+import { FrameController } from './components/FrameController';
+//import { HistoryController } from "./HistoryController.js";
 
 export let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 export let renderer = new THREE.WebGLRenderer();
@@ -39,21 +41,17 @@ const planeGeometry = new THREE.PlaneGeometry( 4, 4 );
 const plane = new THREE.Mesh( planeGeometry, planeMaterial );
 
 const sphereGeometry = new THREE.SphereGeometry( 2, 32, 16 ); 
-//const sphereMaterial = new THREE.MeshBasicMaterial( { color: 0xffff00 } ); 
 const sphere = new THREE.Mesh( sphereGeometry, planeMaterial );
 
 const cylinderGeometry = new THREE.CylinderGeometry( 1, 1, 2, 32 ); 
-//onst material = new THREE.MeshBasicMaterial( {color: 0xffff00} ); 
 const cylinder = new THREE.Mesh( cylinderGeometry, planeMaterial );
 
-//export let canvasIndex = 0;
+
 export let canvas = [plane, sphere, cylinder];
 
-export let drawSceneList = [new THREE.Scene()];
-//drawSceneList[0].add(plane);
+//export let drawSceneList = [new THREE.Scene()];
+export let frames = new FrameController();
 
-
-//import Vuetify from 'vuetify';
 import 'vuetify/dist/vuetify.min.css';
 
 export default {

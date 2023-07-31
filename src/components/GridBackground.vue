@@ -9,8 +9,8 @@
 import * as THREE from 'three';
 import InfiniteGridHelper from "./InfiniteGridHelper.js";
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { renderer, camera, scene, canvas, drawSceneList, drawRenderer } from '../App.vue';
-import { index, canvasIndex } from './DrawingInput.vue';
+import { renderer, camera, scene, canvas, frames, drawRenderer } from '../App.vue';
+import { canvasIndex } from './DrawingInput.vue';
 
 export let grid = InfiniteGridHelper();
 export let background = new THREE.Object3D();
@@ -87,8 +87,8 @@ export default {
         canvas[canvasIndex].position.copy(canvasPosition);
 
         renderer.render(scene, camera);
-        drawRenderer.render(drawSceneList[index].add(canvas[canvasIndex]).add(background), camera);
-        drawSceneList[index].remove(canvas[canvasIndex]);
+        drawRenderer.render(frames.getFrameScene().add(canvas[canvasIndex]).add(background), camera);
+        frames.getFrameScene().remove(canvas[canvasIndex]);
         
         requestAnimationFrame(animate);
         

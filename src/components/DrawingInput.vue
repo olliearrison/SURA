@@ -128,17 +128,16 @@
 <script>
 import LayerViewer from "./LayerViewer.vue";
 import { draw } from "./DrawHelper.js";
-import { HistoryController } from "./HistoryController.js";
-import { arcRenderer, drawSceneList } from '../App.vue';
-import * as THREE from 'three';
+//import { HistoryController } from "./HistoryController.js";
+import { arcRenderer, frames, camera } from '../App.vue';
+//import * as THREE from 'three';
 
-export let index = 0;
 export let canvasIndex = 0;
 
 let drawing = false;
 
 let rotatingInterval = null;  // Interval to rotate index
-let historyController = new HistoryController();
+//let historyController = new HistoryController();
 
 export default {
     name: 'DrawingInput',
@@ -188,7 +187,7 @@ export default {
                     console.log("hello");
                     // Rotate the index 5 times per second
                     rotatingInterval = setInterval(() => {
-                        index = (index + 1) % drawSceneList.length;
+                        frames.index = (frames.index + 1) % frames.length;
                     }, 1000/5); // 1000 ms (1s) divided by 5 gives 200 ms
                 }
             }else{
@@ -277,17 +276,17 @@ export default {
             let x = event.clientX;
             let y = event.clientY;
             draw.onStart(x, y, this.stroke);
-            this.canUndo = historyController.canUndo();
-            this.canRedo = historyController.canRedo();
+            this.canUndo = frames.getFrame().history.canUndo();
+            this.canRedo = frames.getFrame().history.canRedo();
         },
         handleMouseUp() {
             this.isDrawing = false;
             let result = draw.onEnd(this.stroke);
             if (result[0] != false){
-                historyController.action(result);
+                frames.getFrame().history.action(result);
             }
-            this.canUndo = historyController.canUndo();
-            this.canRedo = historyController.canRedo();
+            this.canUndo = frames.getFrame().history.canUndo();
+            this.canRedo = frames.getFrame().history.canRedo();
             //console.log(this.canUndo);
         },
         toggleEraserMode() {
@@ -304,26 +303,14 @@ export default {
             this.newMode = !this.newMode;
         },
         backward() {
-            const len = drawSceneList.length;
-            console.log(len);
+            frames.delFrame();
 
-            historyController = new HistoryController();
-            if (index > -1) {
-                drawSceneList.splice(index, 1);
-            }
-            index --;
-            //drawSceneList.remove(index);
+            // Call the function in the child component
             const layerViewer = this.$refs.layerViewer;
             layerViewer.updateLayers();
         },
         forward() {
-            console.log(index);
-            console.log("forwardddd");
-            const newScene = new THREE.Scene();
-            drawSceneList.push(newScene);
-            historyController = new HistoryController();
-            index++;
-            
+            frames.addFrame();
             const layerViewer = this.$refs.layerViewer;
       
             // Call the function in the child component
@@ -334,12 +321,12 @@ export default {
             this.isDrawing = this.rotatingCondition;
         },
         undo(){
-            historyController.undo();
-            this.canRedo = historyController.canRedo();
+            frames.getFrame().history.undo();
+            this.canRedo = frames.getFrame().history.canRedo();
         },
         redo(){
-            historyController.redo();
-            this.canUndo = historyController.canUndo();
+            frames.getFrame().history.redo();
+            this.canUndo = frames.getFrame().history.canUndo();
         },
         updateSizeMultiplier() {
             // .5 is the constant multiplier
@@ -349,7 +336,7 @@ export default {
         handleCardSelected(selectedIndex) {
         // Use the selected index as needed
             console.log('Selected index:', selectedIndex);
-            index = selectedIndex;
+            frames.setIndex(selectedIndex);
         },
         nextIcon() {
             
@@ -359,6 +346,11 @@ export default {
 
         },
         loadPosition(){
+            const cameraPosition = camera.position.clone();
+            const cameraAngle = camera.rotation.clone();
+
+            frames.setPos(cameraPosition);
+            frames.setAngle(cameraAngle);
 
         },
     }

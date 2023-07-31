@@ -1,6 +1,6 @@
 //import * as THREE from "three";
-import { drawSceneList } from "../App.vue";
-import { index } from './DrawingInput.vue';
+import { frames } from "../App.vue";
+
 
 class HistoryController {
     constructor() {
@@ -27,12 +27,12 @@ class HistoryController {
 
         if (action === 'add') {
 
-            let object = drawSceneList[index].getObjectById(objectID);
-            drawSceneList[index].remove(object);
+            let object = frames.getFrameScene().getObjectById(objectID);
+            frames.getFrameScene().remove(object);
             this.redoHistory.push(['remove', object]);
 
         } else if (action === 'remove') {
-            drawSceneList[index].add(objectID);
+            frames.getFrameScene().add(objectID);
             this.redoHistory.push(['add', objectID]);
         }
     }
@@ -48,12 +48,12 @@ class HistoryController {
         // Reverse the action
         if (action === 'add') {
 
-            let object = drawSceneList[index].getObjectById(objectID);
+            let object = frames.getFrameScene().getObjectById(objectID);
             this.undoHistory.push(['remove', objectID]);
-            drawSceneList[index].remove(object);
+            frames.getFrameScene().remove(object);
 
         } else if (action === 'remove') {
-            drawSceneList[index].add(objectID);
+            frames.getFrameScene().add(objectID);
             this.undoHistory.push(['add', objectID]);
         }
     }
