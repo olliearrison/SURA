@@ -45,6 +45,8 @@ export default {
 
 
     controls = new ArcballControls( camera, arcRenderer.domElement, scene );
+    controls.target.set(10,1,0);
+
     controls.addEventListener('change', this.handleCameraChange);
 
 
@@ -83,6 +85,12 @@ export default {
     },
     animate() {
       requestAnimationFrame(this.animate);
+
+      const frontVector = new THREE.Vector3(0, 0, 4); // Direction in front of the camera
+      const canvasPosition = camera.position.clone().add(camera.getWorldDirection(new THREE.Vector3()).multiplyScalar(frontVector.z));
+      controls.target.copy(canvasPosition);
+
+
       controls.update();
       arcRenderer.render(scene, camera);
     }
