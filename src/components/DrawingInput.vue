@@ -211,7 +211,7 @@ export default {
 
 
         document.body.addEventListener('mouseup', (event) => {
-            if (this.inCanvas(event)){
+            if (this.inCanvas(event) && drawing){
                 this.handleMouseUp();
                 drawing = false;
             }
