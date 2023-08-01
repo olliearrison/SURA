@@ -53,7 +53,7 @@ class FrameController {
         this.currentPos = this.animationPos[this.animationIndex];
         this.currentAngle = this.animationAngle[this.animationIndex];
         
-        if (this.animationIndex % this.animationFPS){
+        if (this.animationIndex % this.animationFPS == 0){
             this.setIndex((this.index + 1) % this.frameList.length);
         }
 
