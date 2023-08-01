@@ -5,7 +5,8 @@
 <script>
 import * as THREE from 'three';
 import { ArcballControls } from 'three/addons/controls/ArcballControls.js';
-import { arcRenderer, camera } from '../App.vue';
+import { arcRenderer } from '../App.vue';
+import { camera } from './Camera.js';
 
 //export let renderer = new THREE.WebGLRenderer({alpha: true, antialias: true});
 
@@ -93,6 +94,7 @@ export default {
 
       controls.update();
       arcRenderer.render(scene, camera);
+    
     }
   }
 }

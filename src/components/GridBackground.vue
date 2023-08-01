@@ -9,7 +9,8 @@
 import * as THREE from 'three';
 import InfiniteGridHelper from "./InfiniteGridHelper.js";
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { renderer, camera, scene, canvas, frames, drawRenderer } from '../App.vue';
+import { renderer, scene, canvas, frames, drawRenderer } from '../App.vue';
+import { camera } from './Camera.js';
 import { canvasIndex } from './DrawingInput.vue';
 
 export let grid = InfiniteGridHelper();
@@ -40,19 +41,12 @@ export default {
     rendererElement.appendChild(renderer.domElement);
     drawRendererElement.appendChild(drawRenderer.domElement);
 
-    //document.body.appendChild(renderer.domElement);
-    //document.body.appendChild(drawRenderer.domElement);
-    // Create a camera
-    
-    //camera = camera;
     camera.rotation.order = "XYZ";
     camera.position.set(this.cameraPosition.x, this.cameraPosition.y, this.cameraPosition.z);
     camera.rotation.set(new THREE.Euler(this.cameraAngle.x, this.cameraAngle.y, this.cameraAngle.z));
 
     
     renderer.setClearColor(new THREE.Color(0xFFFFFF));
-    //renderer.setClearAlpha(0);
-
 
     scene.add(grid);
 
@@ -77,9 +71,17 @@ export default {
         
 
         // Rotate the cube
+        if (frames.play){
+          //console.log(frames.getFrame().pos);
 
-        camera.position.copy(self.cameraPosition);
-        camera.rotation.set(self.cameraAngle.x, self.cameraAngle.y, self.cameraAngle.z);
+          camera.position.copy(frames.currentPos);
+          const angle = frames.currentAngle;
+          camera.rotation.set(angle.x, angle.y, angle.z);
+
+        } else {
+          camera.position.copy(self.cameraPosition);
+          camera.rotation.set(self.cameraAngle.x, self.cameraAngle.y, self.cameraAngle.z);
+        }
         canvas[canvasIndex].rotation.set(self.cameraAngle.x, self.cameraAngle.y, self.cameraAngle.z);
 
         const frontVector = new THREE.Vector3(0, 0, 4); // Direction in front of the camera
@@ -87,7 +89,14 @@ export default {
         canvas[canvasIndex].position.copy(canvasPosition);
 
         renderer.render(scene, camera);
-        drawRenderer.render(frames.getFrameScene().add(canvas[canvasIndex]).add(background), camera);
+
+        const s = frames.getFrameScene().add(background);
+
+        if (!frames.play){
+          s.add(canvas[canvasIndex]);
+        }
+
+        drawRenderer.render(s, camera);
         frames.getFrameScene().remove(canvas[canvasIndex]);
         
         requestAnimationFrame(animate);

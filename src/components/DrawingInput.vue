@@ -129,7 +129,8 @@
 import LayerViewer from "./LayerViewer.vue";
 import { draw } from "./DrawHelper.js";
 //import { HistoryController } from "./HistoryController.js";
-import { arcRenderer, frames, camera } from '../App.vue';
+import { arcRenderer, frames } from '../App.vue';
+import { camera } from './Camera.js';
 //import * as THREE from 'three';
 
 export let canvasIndex = 0;
@@ -181,16 +182,16 @@ export default {
     },
     mounted (){
         this.$watch(() => this.rotatingCondition, (newValue) => {
-            console.log("hello");
+            frames.calculateAnimation();
+
             if(newValue){
                 if(rotatingInterval == null){
-                    console.log("hello");
                     // Rotate the index 5 times per second
                     rotatingInterval = setInterval(() => {
-                        frames.setIndex((frames.index + 1) % frames.frameList.length);
+                        frames.updateAnimationFrame();
                         const layerViewer = this.$refs.layerViewer;
                         layerViewer.updateLayers();
-                    }, 1000/5); // 1000 ms (1s) divided by 5 gives 200 ms
+                    }, 1000/(frames.animationDetail));
                 }
             }else{
                 // Stop rotating the index
@@ -321,6 +322,7 @@ export default {
         play() {
             this.rotatingCondition = !this.rotatingCondition;
             this.isDrawing = this.rotatingCondition;
+            frames.play = this.rotatingCondition;
         },
         undo(){
             frames.getFrame().history.undo();
@@ -348,11 +350,16 @@ export default {
 
         },
         loadPosition(){
+            console.log("saving position");
             const cameraPosition = camera.position.clone();
             const cameraAngle = camera.rotation.clone();
 
+            console.log(cameraPosition, cameraAngle, frames.index);
+
             frames.setPos(cameraPosition);
             frames.setAngle(cameraAngle);
+
+            console.log(frames.getFrame().pos, frames.getFrame().angle);
 
         },
     }

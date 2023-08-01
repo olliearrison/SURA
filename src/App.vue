@@ -23,8 +23,8 @@ import Arcball from './components/ArcballControl.vue';
 import * as THREE from 'three';
 import { FrameController } from './components/FrameController';
 //import { HistoryController } from "./HistoryController.js";
+//import { camera } from './Camera.js';
 
-export let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 export let renderer = new THREE.WebGLRenderer();
 export let scene = new THREE.Scene();
 export let arcRenderer = new THREE.WebGLRenderer({alpha: true, antialias: true});

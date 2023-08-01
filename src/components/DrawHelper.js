@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { MeshLine, MeshLineMaterial, MeshLineRaycast } from "three.meshline";
-import { frames, camera, canvas } from "../App.vue";
+import { frames, canvas } from "../App.vue";
+import { camera } from './Camera.js';
 import { grid } from "./GridBackground.vue";
 import { canvasIndex } from './DrawingInput.vue';
 
