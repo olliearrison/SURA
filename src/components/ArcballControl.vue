@@ -5,12 +5,13 @@
 <script>
 import * as THREE from 'three';
 import { ArcballControls } from 'three/addons/controls/ArcballControls.js';
-import { arcRenderer } from '../App.vue';
+import { arcRenderer, frames } from '../App.vue';
 import { camera } from './Camera.js';
 
 //export let renderer = new THREE.WebGLRenderer({alpha: true, antialias: true});
 
-let controls, scene;
+let scene;
+export let controls;
 
 export default {
   name: 'ArcballControl',
@@ -64,6 +65,22 @@ export default {
   },
    methods: {
     handleCameraChange() {
+
+      if (frames.needsUpdate){
+        camera.position.copy(frames.getFrame().pos);
+        const angle = frames.getFrame().angle;
+        camera.rotation.set(angle.x, angle.y, angle.z);
+        camera.updateProjectionMatrix();
+
+        const frontVector = new THREE.Vector3(0, 0, 4); // Direction in front of the camera
+        const canvasPosition = camera.position.clone().add(camera.getWorldDirection(new THREE.Vector3()).multiplyScalar(frontVector.z));
+        controls.target.copy(canvasPosition);
+
+
+        controls.update();
+        frames.needsUpdate = false;
+      }
+      
       const cameraPosition = camera.position.clone();
       const cameraAngle = camera.rotation.clone();
 
@@ -86,6 +103,10 @@ export default {
     },
     animate() {
       requestAnimationFrame(this.animate);
+
+      if (frames.needsUpdate){
+        this.handleCameraChange();
+      }
 
       const frontVector = new THREE.Vector3(0, 0, 4); // Direction in front of the camera
       const canvasPosition = camera.position.clone().add(camera.getWorldDirection(new THREE.Vector3()).multiplyScalar(frontVector.z));

@@ -27,6 +27,13 @@ class FrameController {
         this.currentPos = new THREE.Vector3();
         this.currentAngle = new THREE.Euler();
         this.animationIndex = 0;
+
+        this.needsUpdate = false;
+    }
+
+    updateCamera(){
+        this.needsUpdate = true;
+        
     }
 
     calculateAnimation(){

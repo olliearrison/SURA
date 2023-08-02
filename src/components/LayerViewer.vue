@@ -43,6 +43,10 @@
         this.model = frames.index;
       },
       selectCard(selectedIndex) {
+        if (this.model == selectedIndex){
+          console.log("???")
+          frames.updateCamera();
+        }
         this.model = selectedIndex;
         this.$emit('card-selected', selectedIndex);
       },
