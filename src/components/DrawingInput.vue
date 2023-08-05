@@ -20,8 +20,12 @@
                     </v-icon>
                 </v-btn>
                 <div class="spacer"></div>
-                <v-btn icon class="fixed-button" @click="loadPosition">
+                <v-btn icon class="fixed-button" @click="loadCameraPosition">
                     <v-icon>mdi-target</v-icon>
+                </v-btn>
+                <div class="spacer"></div>
+                <v-btn icon class="fixed-button" @click="loadCameraPosition">
+                    <v-icon>mdi-target-variant</v-icon>
                 </v-btn>
                 <div class="spacer"></div>
                 <v-btn icon class="fixed-button" ref="eraserButton" @click="toggleEraserMode">
@@ -131,6 +135,7 @@ import { draw } from "./DrawHelper.js";
 //import { HistoryController } from "./HistoryController.js";
 import { arcRenderer, frames } from '../App.vue';
 import { camera } from './Camera.js';
+//import { FrameController } from './components/FrameController';
 //import * as THREE from 'three';
 
 export let canvasIndex = 0;
@@ -201,15 +206,13 @@ export default {
                 }
             }
         });
-        // document.body 
-        /*
-        const button = this.$refs.eraserButton;
-        
-        button.addEventListener('click', () => {
-            console.log("pointer down");
-            this.isEraserMode = !this.isEraserMode;
+
+
+        document.body.addEventListener('contextmenu', (event) => {
+            drawing = false;
+            event.preventDefault();
+            console.log("hiiiiii");
         });
-        */
 
 
         document.body.addEventListener('mouseup', (event) => {
@@ -246,12 +249,19 @@ export default {
                 }
             }
         });
-        //this.handleMouseMove(event);
 
        
 
     },
     methods: {
+        addGuidePoint (x, y) {
+            const result = draw.getCoors(x, y)
+            if (result) {
+                frames.getFrame().setGuidePoint(result);
+            }
+
+
+        },
         inCanvas( event ) {
             var rect = arcRenderer.domElement.getBoundingClientRect();
             var centerX = rect.left + rect.width / 2;
@@ -349,7 +359,7 @@ export default {
             canvasIndex = this.currentIconIndex;
 
         },
-        loadPosition(){
+        loadCameraPosition(){
             console.log("saving position");
             const cameraPosition = camera.position.clone();
             const cameraAngle = camera.rotation.clone();

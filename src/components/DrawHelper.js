@@ -57,6 +57,8 @@ let draw = {
                     
         }
 
+        
+
         start() {
             frames.getFrameScene().add(this.mesh);
         }
@@ -131,6 +133,21 @@ let draw = {
             }
         }
 
+            // for guide points
+        static getCoors(x, y) {
+            var coor = this.l.translate(x, y);
+            
+
+            if (coor.length > 0) {
+                return {
+                x: coor[0].x,
+                y: coor[0].y,
+                z: coor[0].z
+                };
+            }
+
+        }
+
     },
     onStart: function (x, y, stroke) {
 
@@ -169,6 +186,7 @@ let draw = {
     onEnd: function (stroke) {
         return this.l.end(stroke.eraser);
     },
+    
 }
 
 export { draw }

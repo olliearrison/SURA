@@ -78,6 +78,7 @@ export default {
           const angle = frames.currentAngle;
           camera.rotation.set(angle.x, angle.y, angle.z);
 
+
         } else {
           camera.position.copy(self.cameraPosition);
           camera.rotation.set(self.cameraAngle.x, self.cameraAngle.y, self.cameraAngle.z);
@@ -91,12 +92,25 @@ export default {
         renderer.render(scene, camera);
 
         const s = frames.getFrameScene().add(background);
+        let onionSkin = new THREE.Group();
 
         if (!frames.play){
           s.add(canvas[canvasIndex]);
+          if (frames.onion){
+            onionSkin = frames.allGhostGroups;
+
+            s.add(onionSkin)
+          }
         }
 
+        
+
         drawRenderer.render(s, camera);
+
+        s.remove(background);
+        if (frames.onion){
+            s.remove(onionSkin);
+        }
         frames.getFrameScene().remove(canvas[canvasIndex]);
         
         requestAnimationFrame(animate);
@@ -119,7 +133,8 @@ export default {
         camera.updateProjectionMatrix();
         renderer.setSize(width, height);
         drawRenderer.setSize(width, height);
-    }
+    },
+    
   }
 }
 </script>
