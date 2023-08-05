@@ -311,6 +311,7 @@ export default {
         },
         toggleOnionSkin(){
             this.onionSkin = !this.onionSkin;
+            frames.onion = !frames.onion;
         },
         toggleNewMode(){
             this.newMode = !this.newMode;
@@ -353,10 +354,13 @@ export default {
             frames.setIndex(selectedIndex);
         },
         nextIcon() {
-            
+
+
             this.currentIconIndex = (this.currentIconIndex + 1) % this.icons.length;
             console.log("index changed", this.currentIconIndex);
             canvasIndex = this.currentIconIndex;
+
+
 
         },
         loadCameraPosition(){

@@ -40,7 +40,7 @@ const planeGeometry = new THREE.PlaneGeometry( 4, 4 );
     } );
 const plane = new THREE.Mesh( planeGeometry, planeMaterial );
 
-const sphereGeometry = new THREE.SphereGeometry( 2, 32, 16 ); 
+const sphereGeometry = new THREE.SphereGeometry( 1, 32, 16 ); 
 const sphere = new THREE.Mesh( sphereGeometry, planeMaterial );
 
 const cylinderGeometry = new THREE.CylinderGeometry( 1, 1, 2, 32 ); 

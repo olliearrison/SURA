@@ -69,7 +69,7 @@ class FrameController {
         this.animationPos = [];
         this.animationAngle = [];
         this.animationDetail = 0;
-        this.animationFPS = 100;
+        this.animationFPS = 10;
         this.drawingFPS = 5;
 
         this.currentPos = new THREE.Vector3();
