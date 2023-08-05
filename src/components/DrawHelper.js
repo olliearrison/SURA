@@ -24,12 +24,13 @@ let draw = {
                 side: THREE.DoubleSide,
                 fog: true,
                 wireframe: false,
-                alphaTest: 0.9,
+                alphaTest: 0,
                 blending: THREE.NormalBlending,
-                transparent: false,
+                transparent: true,
                 resolution: new THREE.Vector2(window.innerWidth, window.innerHeight),
                 repeat: new THREE.Vector2(.1, .1),
                 opacity: 1,
+                
             });
             this.mesh = new THREE.Mesh(this.line.geometry, this.material);
             this.mesh.raycast = MeshLineRaycast;

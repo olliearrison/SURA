@@ -159,7 +159,7 @@ export default {
             rotatingCondition: false,
             stroke: {
                 show_stroke: true,
-                lineWidth: .25,
+                lineWidth: .25 * .5,
                 color: 0x000000,
                 eraser: false,
                 
