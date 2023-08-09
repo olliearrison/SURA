@@ -172,6 +172,7 @@ export default {
             canRedo: false,
             sizeMultiplier: .5,
             newMode: false,
+            value: 25,
         };
     },
     computed: {
