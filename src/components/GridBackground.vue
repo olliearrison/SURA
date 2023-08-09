@@ -93,9 +93,12 @@ export default {
 
         const s = frames.getFrameScene().add(background);
         let onionSkin = new THREE.Group();
+        let point = frames.getFrame().guidePoint;
 
         if (!frames.play){
           s.add(canvas[canvasIndex]);
+          //console.log(frames.getFrameScene().guidePoint);
+          s.add(point);
           if (frames.onion){
             onionSkin = frames.allGhostGroups;
 
@@ -108,6 +111,7 @@ export default {
         drawRenderer.render(s, camera);
 
         s.remove(background);
+        s.remove(point);
         if (frames.onion){
             s.remove(onionSkin);
         }

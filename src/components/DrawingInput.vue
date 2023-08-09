@@ -24,7 +24,7 @@
                     <v-icon>mdi-target</v-icon>
                 </v-btn>
                 <div class="spacer"></div>
-                <v-btn icon class="fixed-button" @click="loadCameraPosition">
+                <v-btn icon class="fixed-button" @click="goToGuide">
                     <v-icon>mdi-target-variant</v-icon>
                 </v-btn>
                 <div class="spacer"></div>
@@ -141,6 +141,7 @@ import { camera } from './Camera.js';
 export let canvasIndex = 0;
 
 let drawing = false;
+let selecting = false;
 
 let rotatingInterval = null;  // Interval to rotate index
 //let historyController = new HistoryController();
@@ -210,20 +211,23 @@ export default {
 
         document.body.addEventListener('contextmenu', (event) => {
             drawing = false;
+            selecting = true;
             event.preventDefault();
             console.log("hiiiiii");
+            this.addGuidePoint(event);
+            selecting = false;
         });
 
 
         document.body.addEventListener('mouseup', (event) => {
-            if (this.inCanvas(event) && drawing){
+            if (this.inCanvas(event) && drawing && !selecting){
                 this.handleMouseUp();
                 drawing = false;
             }
         });
 
         document.body.addEventListener('mousedown', (event) => {
-            if (this.inCanvas(event)) {
+            if (this.inCanvas(event) && !selecting) {
                 drawing = true;
                 this.handleMouseDown(event);
             }
@@ -239,7 +243,7 @@ export default {
         document.body.addEventListener('mousemove', (event) => {
             //console.log(event.pressure);
             if (this.inCanvas(event)) {
-                if (drawing) {
+                if (drawing && !selecting) {
                     this.handleMouseMove(event);
                 }
             } else {
@@ -254,8 +258,11 @@ export default {
 
     },
     methods: {
-        addGuidePoint (x, y) {
-            const result = draw.getCoors(x, y)
+        goToGuide () {
+            frames.updateGuide();
+        },
+        addGuidePoint (event) {
+            const result = draw.getCoors(event.clientX, event.clientY)
             if (result) {
                 frames.getFrame().setGuidePoint(result);
             }

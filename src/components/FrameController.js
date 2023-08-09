@@ -11,13 +11,24 @@ class Frame {
 
         this.pos = camera.position.clone();
         this.angle = camera.rotation.clone();
-        this.guidePoint = new THREE.Object3D;
+        this.guidePoint = new THREE.Group();
         this.guidePointPosition = new THREE.Vector3();
     }
 
-    setGuidePoint(pos){
-        this.guidePointPosition = pos;
-        
+    setGuidePoint(pos) {
+        this.guidePointPosition = new THREE.Vector3(pos.x, pos.y, pos.z);
+    
+        let geometry = new THREE.BufferGeometry();
+    
+        // Add a vertex (point) to the geometry using a Float32Array
+        const verticesArray = new Float32Array([pos.x, pos.y, pos.z]);
+        geometry.setAttribute('position', new THREE.BufferAttribute(verticesArray, 3));
+    
+        // Create a material for the points
+        let material = new THREE.PointsMaterial({ color: 0xffffff, size: .05 });
+    
+        // Create a points object and add it to the scene
+        this.guidePoint = new THREE.Points(geometry, material);
     }
 
     getGhostGroup(opacity) {
@@ -77,6 +88,7 @@ class FrameController {
         this.animationIndex = 0;
 
         this.needsUpdate = false;
+        this.guideNeedsUpdate = false;
 
         this.animationMoments = 0;
 
@@ -94,6 +106,10 @@ class FrameController {
             this.allGhostGroups.add(this.getFrameAtIndex(i).getGhostGroup(opacity));
             }
         }
+    }
+
+    updateGuide(){
+        this.guideNeedsUpdate = true;
     }
 
     updateCamera(){

@@ -80,6 +80,24 @@ export default {
         controls.update();
         frames.needsUpdate = false;
       }
+
+      if (frames.guideNeedsUpdate){
+        const angle = frames.getFrame().angle;
+        camera.rotation.set(angle.x, angle.y, angle.z);
+
+        const canvasPosition = frames.getFrame().guidePointPosition;
+
+        const frontVector = new THREE.Vector3(0, 0, -4); // Direction in front of the camera
+
+        const cameraPosition = canvasPosition.clone().add(camera.getWorldDirection(new THREE.Vector3()).multiplyScalar(frontVector.z));
+        camera.position.copy(cameraPosition);
+
+        camera.updateProjectionMatrix();
+        controls.target.copy(canvasPosition);
+        controls.update();
+        frames.guideNeedsUpdate = false;
+
+      }
       
       const cameraPosition = camera.position.clone();
       const cameraAngle = camera.rotation.clone();
@@ -104,7 +122,7 @@ export default {
     animate() {
       requestAnimationFrame(this.animate);
 
-      if (frames.needsUpdate){
+      if (frames.needsUpdate || frames.guideNeedsUpdate){
         this.handleCameraChange();
       }
 
