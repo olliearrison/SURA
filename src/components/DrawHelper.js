@@ -26,7 +26,7 @@ let draw = {
                 wireframe: false,
                 alphaTest: 0,
                 blending: THREE.NormalBlending,
-                transparent: true,
+                transparent: false,
                 resolution: new THREE.Vector2(window.innerWidth, window.innerHeight),
                 repeat: new THREE.Vector2(.1, .1),
                 opacity: 1,
