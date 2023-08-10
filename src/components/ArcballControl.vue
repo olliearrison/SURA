@@ -7,6 +7,7 @@ import * as THREE from 'three';
 import { ArcballControls } from 'three/addons/controls/ArcballControls.js';
 import { arcRenderer, frames } from '../App.vue';
 import { camera } from './Camera.js';
+import { cameraDistance } from './DrawingInput.vue'
 
 //export let renderer = new THREE.WebGLRenderer({alpha: true, antialias: true});
 
@@ -72,7 +73,7 @@ export default {
         camera.rotation.set(angle.x, angle.y, angle.z);
         camera.updateProjectionMatrix();
 
-        const frontVector = new THREE.Vector3(0, 0, 4); // Direction in front of the camera
+        const frontVector = new THREE.Vector3(0, 0, cameraDistance); // Direction in front of the camera
         const canvasPosition = camera.position.clone().add(camera.getWorldDirection(new THREE.Vector3()).multiplyScalar(frontVector.z));
         controls.target.copy(canvasPosition);
 
@@ -87,7 +88,7 @@ export default {
 
         const canvasPosition = frames.getFrame().guidePointPosition;
 
-        const frontVector = new THREE.Vector3(0, 0, -4); // Direction in front of the camera
+        const frontVector = new THREE.Vector3(0, 0, -cameraDistance); // Direction in front of the camera
 
         const cameraPosition = canvasPosition.clone().add(camera.getWorldDirection(new THREE.Vector3()).multiplyScalar(frontVector.z));
         camera.position.copy(cameraPosition);
@@ -126,7 +127,7 @@ export default {
         this.handleCameraChange();
       }
 
-      const frontVector = new THREE.Vector3(0, 0, 4); // Direction in front of the camera
+      const frontVector = new THREE.Vector3(0, 0, cameraDistance); // Direction in front of the camera
       const canvasPosition = camera.position.clone().add(camera.getWorldDirection(new THREE.Vector3()).multiplyScalar(frontVector.z));
       controls.target.copy(canvasPosition);
 

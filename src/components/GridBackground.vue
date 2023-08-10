@@ -11,7 +11,7 @@ import InfiniteGridHelper from "./InfiniteGridHelper.js";
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { renderer, scene, canvas, frames, drawRenderer } from '../App.vue';
 import { camera } from './Camera.js';
-import { canvasIndex } from './DrawingInput.vue';
+import { canvasIndex, cameraDistance } from './DrawingInput.vue';
 
 export let grid = InfiniteGridHelper();
 export let background = new THREE.Object3D();
@@ -85,7 +85,7 @@ export default {
         }
         canvas[canvasIndex].rotation.set(self.cameraAngle.x, self.cameraAngle.y, self.cameraAngle.z);
 
-        const frontVector = new THREE.Vector3(0, 0, 4); // Direction in front of the camera
+        const frontVector = new THREE.Vector3(0, 0, cameraDistance); // Direction in front of the camera
         const canvasPosition = camera.position.clone().add(camera.getWorldDirection(new THREE.Vector3()).multiplyScalar(frontVector.z));
         canvas[canvasIndex].position.copy(canvasPosition);
 
@@ -94,11 +94,13 @@ export default {
         const s = frames.getFrameScene().add(background);
         let onionSkin = new THREE.Group();
         let point = frames.getFrame().guidePoint;
+        let ghostPoints = frames.allGhostGuides;
 
         if (!frames.play){
           s.add(canvas[canvasIndex]);
           //console.log(frames.getFrameScene().guidePoint);
           s.add(point);
+          s.add(ghostPoints);
           if (frames.onion){
             onionSkin = frames.allGhostGroups;
 
@@ -112,6 +114,7 @@ export default {
 
         s.remove(background);
         s.remove(point);
+        s.remove(ghostPoints);
         if (frames.onion){
             s.remove(onionSkin);
         }

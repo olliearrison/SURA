@@ -14,6 +14,56 @@
                     <v-icon>mdi-file</v-icon>
                 </v-btn>
                 <v-spacer></v-spacer>
+                <v-tooltip bottom>
+                    <template v-slot:activator="{ attrs }">
+                                <v-slider
+                                                show-ticks
+                                                class="my-slider"
+                                                color="blue-grey-lighten-3"
+                                                density="compact"
+                                                track-size="15"
+                                                v-model="cameraDistance"
+                                                label="Regular"
+                                                :step="0.1"
+                                                :min="0.4"
+                                                :max="10"
+                                                v-bind="attrs"
+                                               
+                                                @click="updateCameraDistance"
+                                                >
+                                </v-slider>
+                            </template>
+                    <span>Current Value: </span>
+                </v-tooltip>
+                <div class="spacer"></div>
+                <v-slider
+                                show-ticks
+                                class="my-slider"
+                                color="blue-grey-lighten-3"
+                                density="compact"
+                                track-size="15"
+                                v-model="sizeMultiplier"
+                                :step="0.1"
+                                :min="0.4"
+                                :max="1.5"
+                                @click="updateSizeMultiplier"
+                                >
+                </v-slider>
+                <div class="spacer"></div>
+                <v-slider
+                                show-ticks
+                                class="my-slider"
+                                color="blue-grey-lighten-3"
+                                density="compact"
+                                track-size="15"
+                                v-model="sizeMultiplier"
+                                :step="0.1"
+                                :min="0.4"
+                                :max="1.5"
+                                @click="updateSizeMultiplier"
+                                >
+                </v-slider>
+                <div class="spacer"></div>
                 <v-btn icon class="fixed-button" @click="toggleNewMode">
                     <v-icon>
                         {{ newMode ? 'mdi-toggle-switch-outline' : 'mdi-toggle-switch-off-outline' }}
@@ -138,6 +188,7 @@ import { camera } from './Camera.js';
 //import { FrameController } from './components/FrameController';
 //import * as THREE from 'three';
 
+export let cameraDistance = 4;
 export let canvasIndex = 0;
 
 let drawing = false;
@@ -173,6 +224,7 @@ export default {
             sizeMultiplier: .5,
             newMode: false,
             value: 25,
+            cameraDistance: 4,
         };
     },
     computed: {
@@ -214,7 +266,7 @@ export default {
             drawing = false;
             selecting = true;
             event.preventDefault();
-            console.log("hiiiiii");
+
             this.addGuidePoint(event);
             selecting = false;
         });
@@ -247,7 +299,7 @@ export default {
                 drawing = true;
                 this.handleMouseDown(x, y);
             }
-            console.log("kjsgbsajnbg");
+
             drawing = true;
             
         });
@@ -287,7 +339,7 @@ export default {
                 this.stroke.lineWidth = event.pressure * .5 * this.sizeMultiplier;
             }
 
-            console.log(event.pressure, this.sizeMultiplier, this.stroke.lineWidth);
+
             
 
         });
@@ -315,6 +367,11 @@ export default {
 
     },
     methods: {
+        updateCameraDistance(){
+            console.log("updating",cameraDistance);
+            cameraDistance = this.cameraDistance;
+            frames.updateGuide();
+        },
         goToGuide () {
             frames.updateGuide();
         },
@@ -431,12 +488,9 @@ export default {
             const cameraPosition = camera.position.clone();
             const cameraAngle = camera.rotation.clone();
 
-            console.log(cameraPosition, cameraAngle, frames.index);
 
             frames.setPos(cameraPosition);
             frames.setAngle(cameraAngle);
-
-            console.log(frames.getFrame().pos, frames.getFrame().angle);
 
         },
     }

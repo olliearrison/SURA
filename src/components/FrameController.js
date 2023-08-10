@@ -13,6 +13,7 @@ class Frame {
         this.angle = camera.rotation.clone();
         this.guidePoint = new THREE.Group();
         this.guidePointPosition = new THREE.Vector3();
+        this.guidePointGhost = new THREE.Group();
     }
 
     setGuidePoint(pos) {
@@ -29,6 +30,27 @@ class Frame {
     
         // Create a points object and add it to the scene
         this.guidePoint = new THREE.Points(geometry, material);
+    }
+
+    getGuidePointGhost(opacity) {
+    
+        let geometry = new THREE.BufferGeometry();
+    
+        const verticesArray = new Float32Array([this.guidePointPosition.x, this.guidePointPosition.y, this.guidePointPosition.z]);
+        geometry.setAttribute('position', new THREE.BufferAttribute(verticesArray, 3));
+    
+        // Create a material for the points
+        let material = new THREE.PointsMaterial
+        ({ 
+            color: 0xffffff, 
+            size: .05,
+            transparent: true,
+            opacity: opacity,
+        });
+    
+        // Create a points object and add it to the scene
+        return new THREE.Points(geometry, material);
+
     }
 
     getGhostGroup(opacity) {
@@ -73,6 +95,7 @@ class FrameController {
         this.index = 0;
 
         this.allGhostGroups = new THREE.Group();
+        this.allGhostGuides = new THREE.Group();
         this.onionSkinDepth = 3;
         this.onion = true;
 
@@ -94,7 +117,22 @@ class FrameController {
 
     }
 
+    updateAllGhostGuides(){
+        const startIndex = Math.max(0, this.index - this.onionSkinDepth);
+        const endIndex = Math.min(this.frameList.length, this.index + this.onionSkinDepth);
+
+        this.allGhostGuides = new THREE.Group();
+
+        for (let i = startIndex; i < endIndex; i++) {
+            if (i != this.index){
+                let opacity = .3 / (Math.abs(this.index - i))
+                this.allGhostGuides.add(this.getFrameAtIndex(i).getGuidePointGhost(opacity));
+            }
+        }
+    }
+
     updateAllGhostGroups(){
+        this.updateAllGhostGuides();
         const startIndex = Math.max(0, this.index - this.onionSkinDepth);
         const endIndex = Math.min(this.frameList.length, this.index + this.onionSkinDepth);
 
