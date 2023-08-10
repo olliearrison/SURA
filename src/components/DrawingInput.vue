@@ -221,31 +221,87 @@ export default {
 
 
         document.body.addEventListener('mouseup', (event) => {
-            if (this.inCanvas(event) && drawing && !selecting){
+            const x = event.clientX;
+            const y = event.clientY;
+            if (this.inCanvas(x, y) && drawing && !selecting){
                 this.handleMouseUp();
                 drawing = false;
             }
         });
 
         document.body.addEventListener('mousedown', (event) => {
-            if (this.inCanvas(event) && !selecting) {
+            const x = event.clientX;
+            const y = event.clientY;
+            if (this.inCanvas(x, y) && !selecting) {
                 drawing = true;
-                this.handleMouseDown(event);
+                this.handleMouseDown(x, y);
+            }
+            
+        });
+
+        document.body.addEventListener('touchstart', (event) => {
+            const x = (event.targetTouches[0] ? event.targetTouches[0].pageX : event.changedTouches[event.changedTouches.length-1].pageX);
+            const y = (event.targetTouches[0] ? event.targetTouches[0].pageY : event.changedTouches[event.changedTouches.length-1].pageY);
+
+            if (this.inCanvas(x, y) && !selecting) {
+                drawing = true;
+                this.handleMouseDown(x, y);
+            }
+            console.log("kjsgbsajnbg");
+            drawing = true;
+            
+        });
+
+        document.body.addEventListener('touchmove', (event) => {
+            const x = (event.targetTouches[0] ? event.targetTouches[0].pageX : event.changedTouches[event.changedTouches.length-1].pageX);
+            const y = (event.targetTouches[0] ? event.targetTouches[0].pageY : event.changedTouches[event.changedTouches.length-1].pageY);
+
+
+            if (this.inCanvas(x, y)) {
+                //console.log("not getting other click", this.isDrawing);
+                if (drawing && !selecting) {
+                    this.handleMouseMove(x, y);
+                }
+            } else {
+                if (drawing){
+                    this.handleMouseUp();
+                    drawing = false;
+                }
+            }
+        });
+
+        document.body.addEventListener('touchend', (event) => {
+            const x = (event.targetTouches[0] ? event.targetTouches[0].pageX : event.changedTouches[event.changedTouches.length-1].pageX);
+            const y = (event.targetTouches[0] ? event.targetTouches[0].pageY : event.changedTouches[event.changedTouches.length-1].pageY);
+
+            if (this.inCanvas(x, y) && drawing && !selecting){
+                this.handleMouseUp();
+                drawing = false;
             }
         });
 
         document.body.addEventListener('pointermove', (event) => {
+            
             if (event.pressure > 0){
+            
                 this.stroke.lineWidth = event.pressure * .5 * this.sizeMultiplier;
             }
+
+            console.log(event.pressure, this.sizeMultiplier, this.stroke.lineWidth);
+            
 
         });
 
         document.body.addEventListener('mousemove', (event) => {
             //console.log(event.pressure);
-            if (this.inCanvas(event)) {
+            //console.log(event);
+            const x = event.clientX;
+            const y = event.clientY;
+
+            if (this.inCanvas(x, y)) {
+                //console.log("not getting other click", this.isDrawing);
                 if (drawing && !selecting) {
-                    this.handleMouseMove(event);
+                    this.handleMouseMove(x, y);
                 }
             } else {
                 if (drawing){
@@ -270,13 +326,13 @@ export default {
 
 
         },
-        inCanvas( event ) {
+        inCanvas( x, y ) {
             var rect = arcRenderer.domElement.getBoundingClientRect();
             var centerX = rect.left + rect.width / 2;
             var centerY = rect.top + rect.height / 2;
 
-            const dx = event.clientX - centerX;
-            const dy = event.clientY - centerY;
+            const dx = x - centerX;
+            const dy = y - centerY;
             const distance = Math.sqrt(dx * dx + dy * dy);
 
             if (distance < rect.width/2){
@@ -284,18 +340,16 @@ export default {
             }
             return true;
         },
-        handleMouseMove(event) {
+        handleMouseMove(x, y) {
+            //console.log("draw", this.isDrawing);
             if (!this.isDrawing) return;
-            let x = event.clientX;
-            let y = event.clientY;
             // Assuming a 2D drawing, so Z is constant, but this could be modified as per the requirement.
             draw.onMove(x, y, this.stroke);
         },
-        handleMouseDown(event) {
+        handleMouseDown(x, y) {
             //console.log("mouse down");
             this.isDrawing = true;
-            let x = event.clientX;
-            let y = event.clientY;
+            //this.updateSizeMultiplier();
             draw.onStart(x, y, this.stroke);
             this.canUndo = frames.getFrame().history.canUndo();
             this.canRedo = frames.getFrame().history.canRedo();
@@ -308,6 +362,7 @@ export default {
             }
             this.canUndo = frames.getFrame().history.canUndo();
             this.canRedo = frames.getFrame().history.canRedo();
+
             //console.log(this.canUndo);
         },
         toggleEraserMode() {

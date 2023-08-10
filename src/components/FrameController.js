@@ -117,6 +117,7 @@ class FrameController {
     }
 
     calculateAnimation(){
+        this.animationIndex = 0;
         const positions = [];
         const rotations = [];
         for (let i = 0; i < this.frameList.length; i++){
